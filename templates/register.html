@@ -1,19 +1,214 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Register | SmartRoutine</title>
-<link rel="stylesheet" href="/static/style.css">
+<meta charset="UTF-8">
+<title>Create Account | SmartRoutine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ================= RESET ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",Arial,sans-serif;
+}
+body{
+  background:linear-gradient(135deg,#1a0b00,#000);
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ================= WRAPPER ================= */
+.auth-wrapper{
+  display:flex;
+  width:900px;
+  max-width:95%;
+  background:#0d0d0d;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(0,0,0,.7);
+}
+
+/* ================= LEFT PANEL ================= */
+.auth-left{
+  width:45%;
+  background:
+    linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.8)),
+    url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+  background-size:cover;
+  background-position:center;
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.auth-left h2{
+  color:#ff9f1a;
+}
+.auth-left p{
+  opacity:.9;
+  font-size:1.1rem;
+  max-width:280px;
+}
+.back-link{
+  color:#fff;
+  text-decoration:none;
+  font-size:.9rem;
+  opacity:.8;
+}
+
+/* ================= RIGHT PANEL ================= */
+.auth-right{
+  width:55%;
+  padding:50px 40px;
+}
+.auth-right h1{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+.auth-right p{
+  opacity:.75;
+  margin-bottom:25px;
+}
+.auth-right a{
+  color:#ff9f1a;
+  text-decoration:none;
+}
+
+/* ================= FORM ================= */
+form{
+  margin-top:20px;
+}
+.input-group{
+  display:flex;
+  gap:15px;
+}
+input{
+  width:100%;
+  padding:14px;
+  background:#111;
+  border:1px solid #222;
+  border-radius:12px;
+  color:#fff;
+  margin-bottom:15px;
+}
+input::placeholder{
+  color:#777;
+}
+.checkbox{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:.9rem;
+  margin:15px 0;
+  opacity:.85;
+}
+
+/* ================= BUTTON ================= */
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:#ff9f1a;
+  color:#000;
+  font-weight:700;
+  font-size:1rem;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{
+  background:#ffc266;
+}
+
+/* ================= SOCIAL ================= */
+.divider{
+  text-align:center;
+  margin:25px 0;
+  font-size:.85rem;
+  opacity:.6;
+}
+.social-buttons{
+  display:flex;
+  gap:15px;
+}
+.social-buttons button{
+  background:#111;
+  color:#fff;
+  border:1px solid #222;
+  font-weight:500;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+  .auth-wrapper{
+    flex-direction:column;
+  }
+  .auth-left{
+    width:100%;
+    min-height:200px;
+  }
+  .auth-right{
+    width:100%;
+  }
+}
+</style>
 </head>
-<body class="auth">
-<div class="auth-card animate">
-<h2>Create Account</h2>
-<form method="post">
-<input name="username" required>
-<input name="password" type="password" required>
-<button>Create Account</button>
-</form>
-<a href="/">Back to login</a>
+
+<body>
+
+<div class="auth-wrapper">
+
+  <!-- LEFT SIDE -->
+  <div class="auth-left">
+    <div>
+      <h2>SmartRoutine</h2>
+      <p>Build discipline. Track accuracy. Grow daily.</p>
+    </div>
+    <a class="back-link" href="/">← Back to website</a>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="auth-right">
+    <h1>Create an account</h1>
+    <p>
+      Already have an account?
+      <a href="/login">Log in</a>
+    </p>
+
+    <form method="POST">
+      <div class="input-group">
+        <input name="first_name" placeholder="First name" required>
+        <input name="last_name" placeholder="Last name" required>
+      </div>
+
+      <input name="email" type="email" placeholder="Email address" required>
+      <input name="password" type="password" placeholder="Create password" required>
+
+      <div class="checkbox">
+        <input type="checkbox" required>
+        <span>I agree to the <a href="#">Terms & Conditions</a></span>
+      </div>
+
+      <button type="submit">Create account</button>
+    </form>
+
+    <div class="divider">or register with</div>
+
+    <div class="social-buttons">
+      <button type="button"><i class="fab fa-google"></i> Google</button>
+      <button type="button"><i class="fab fa-apple"></i> Apple</button>
+    </div>
+
+  </div>
+
 </div>
+
 </body>
 </html>
