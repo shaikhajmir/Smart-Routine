@@ -1,0 +1,13 @@
+
+body{margin:0;font-family:Arial;background:#0f172a;color:#e5e7eb}
+header{display:flex;justify-content:space-between;padding:15px;background:#020617;position:sticky;top:0}
+nav a{color:white;margin:0 10px;text-decoration:none}
+.card{background:#020617;margin:20px;padding:20px;border-radius:14px}
+footer{text-align:center;padding:20px;background:#020617}
+.social i{margin:10px;font-size:20px}
+.auth{display:flex;justify-content:center;align-items:center;height:100vh}
+.auth-card{background:#020617;padding:30px;border-radius:14px;width:300px}
+input,textarea,button{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:none}
+button{background:#38bdf8;font-weight:bold}
+.animate{animation:fade 1s}
+@keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1}}

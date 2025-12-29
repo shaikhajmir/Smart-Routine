@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard | SmartRoutine</title>
+<link rel="stylesheet" href="/static/style.css">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<header>
+<h1>SmartRoutine</h1>
+<nav>
+<a href="#">Dashboard</a>
+<a href="#calendar">Calendar</a>
+<a href="#notes">Notes</a>
+<a href="#ai">AI</a>
+<a href="/logout">Logout</a>
+</nav>
+</header>
+
+<section id="calendar" class="card animate"></section>
+
+<section id="notes" class="card animate">
+<h3>Daily Notes</h3>
+<textarea id="notesTxt"></textarea>
+</section>
+
+<section class="card animate">
+<h3>Ask AI</h3>
+<input id="prompt" placeholder="Ask AI about routine">
+<button onclick="askAI()">Ask</button>
+<div id="aiBox"></div>
+</section>
+
+<button onclick="saveAll()">Save All</button>
+
+<footer>
+<p>© 2025 SmartRoutine</p>
+<div class="social">
+<i class="fab fa-github"></i>
+<i class="fab fa-linkedin"></i>
+<i class="fab fa-instagram"></i>
+</div>
+<p><a href="#">Help</a> | <a href="#">Contact</a></p>
+</footer>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
