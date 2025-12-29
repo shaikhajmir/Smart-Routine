@@ -7,88 +7,88 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- Google Identity -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 <style>
-/* ================= RESET ================= */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:"Segoe UI",Arial,sans-serif;
-}
+/* ========== RESET ========== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial,sans-serif}
 body{
-  background:linear-gradient(135deg,#1a0b00,#000);
+  background:radial-gradient(circle at top,#1a0b00,#000);
   color:#fff;
   min-height:100vh;
   display:flex;
-  align-items:center;
-  justify-content:center;
+  flex-direction:column;
 }
 
-/* ================= WRAPPER ================= */
+/* ========== HEADER (FROM base.html) ========== */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 50px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(10px);
+}
+header h1{color:#ff9f1a}
+header a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:20px;
+}
+.btn{
+  background:#ff9f1a;
+  color:#000;
+  padding:10px 22px;
+  border-radius:30px;
+  font-weight:600;
+}
+
+/* ========== AUTH CARD ========== */
+.main{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+}
 .auth-wrapper{
   display:flex;
   width:900px;
-  max-width:95%;
+  max-width:100%;
   background:#0d0d0d;
   border-radius:22px;
   overflow:hidden;
   box-shadow:0 0 60px rgba(0,0,0,.7);
 }
 
-/* ================= LEFT PANEL ================= */
+/* LEFT */
 .auth-left{
   width:45%;
   background:
     linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.8)),
     url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
   background-size:cover;
-  background-position:center;
   padding:40px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
 }
-.auth-left h2{
-  color:#ff9f1a;
-}
-.auth-left p{
-  opacity:.9;
-  font-size:1.1rem;
-  max-width:280px;
-}
-.back-link{
-  color:#fff;
-  text-decoration:none;
-  font-size:.9rem;
-  opacity:.8;
-}
+.auth-left h2{color:#ff9f1a}
+.auth-left p{opacity:.9}
 
-/* ================= RIGHT PANEL ================= */
+/* RIGHT */
 .auth-right{
   width:55%;
   padding:50px 40px;
 }
-.auth-right h1{
-  font-size:2rem;
-  margin-bottom:10px;
-}
-.auth-right p{
-  opacity:.75;
-  margin-bottom:25px;
-}
-.auth-right a{
-  color:#ff9f1a;
-  text-decoration:none;
-}
+.auth-right h1{margin-bottom:10px}
+.auth-right p{opacity:.8}
+.auth-right a{color:#ff9f1a;text-decoration:none}
 
-/* ================= FORM ================= */
-form{
-  margin-top:20px;
-}
-.input-group{
-  display:flex;
-  gap:15px;
-}
+/* FORM */
+form{margin-top:25px}
+.input-group{display:flex;gap:15px}
 input{
   width:100%;
   padding:14px;
@@ -98,19 +98,16 @@ input{
   color:#fff;
   margin-bottom:15px;
 }
-input::placeholder{
-  color:#777;
-}
 .checkbox{
   display:flex;
   align-items:center;
   gap:10px;
   font-size:.9rem;
-  margin:15px 0;
   opacity:.85;
+  margin:15px 0;
 }
 
-/* ================= BUTTON ================= */
+/* BUTTON */
 button{
   width:100%;
   padding:14px;
@@ -121,94 +118,165 @@ button{
   font-weight:700;
   font-size:1rem;
   cursor:pointer;
-  transition:.3s;
 }
-button:hover{
-  background:#ffc266;
-}
+button:hover{background:#ffc266}
 
-/* ================= SOCIAL ================= */
+/* SOCIAL */
 .divider{
   text-align:center;
   margin:25px 0;
-  font-size:.85rem;
   opacity:.6;
 }
-.social-buttons{
+.social{
   display:flex;
   gap:15px;
 }
-.social-buttons button{
+.social button{
   background:#111;
-  color:#fff;
   border:1px solid #222;
-  font-weight:500;
+  color:#fff;
 }
 
-/* ================= MOBILE ================= */
+/* ========== FOOTER (FROM base.html) ========== */
+footer{
+  background:#000;
+  padding:40px 20px 20px;
+  border-top:1px solid #222;
+}
+.footer-grid{
+  max-width:1100px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:30px;
+}
+.footer-grid h4{margin-bottom:12px}
+.footer-grid a{
+  color:#aaa;
+  text-decoration:none;
+  display:block;
+  margin-bottom:6px;
+}
+.footer-grid a:hover{color:#fff}
+.social-icons i{
+  color:#ff9f1a;
+  margin-right:12px;
+}
+.footer-bottom{
+  text-align:center;
+  margin-top:30px;
+  color:#777;
+  font-size:.9rem;
+}
+
+/* MOBILE */
 @media(max-width:768px){
-  .auth-wrapper{
-    flex-direction:column;
-  }
-  .auth-left{
-    width:100%;
-    min-height:200px;
-  }
-  .auth-right{
-    width:100%;
-  }
+  .auth-wrapper{flex-direction:column}
+  .auth-left,.auth-right{width:100%}
+  header{padding:15px 20px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="auth-wrapper">
-
-  <!-- LEFT SIDE -->
-  <div class="auth-left">
-    <div>
-      <h2>SmartRoutine</h2>
-      <p>Build discipline. Track accuracy. Grow daily.</p>
-    </div>
-    <a class="back-link" href="/">← Back to website</a>
+<header>
+  <h1>SmartRoutine</h1>
+  <div>
+    <a href="/login">Login</a>
+    <a class="btn" href="/">Home</a>
   </div>
+</header>
 
-  <!-- RIGHT SIDE -->
-  <div class="auth-right">
-    <h1>Create an account</h1>
-    <p>
-      Already have an account?
-      <a href="/login">Log in</a>
-    </p>
+<div class="main">
+  <div class="auth-wrapper">
 
-    <form method="POST">
-      <div class="input-group">
-        <input name="first_name" placeholder="First name" required>
-        <input name="last_name" placeholder="Last name" required>
+    <div class="auth-left">
+      <div>
+        <h2>SmartRoutine</h2>
+        <p>Build discipline. Track accuracy. Grow daily.</p>
       </div>
-
-      <input name="email" type="email" placeholder="Email address" required>
-      <input name="password" type="password" placeholder="Create password" required>
-
-      <div class="checkbox">
-        <input type="checkbox" required>
-        <span>I agree to the <a href="#">Terms & Conditions</a></span>
-      </div>
-
-      <button type="submit">Create account</button>
-    </form>
-
-    <div class="divider">or register with</div>
-
-    <div class="social-buttons">
-      <button type="button"><i class="fab fa-google"></i> Google</button>
-      <button type="button"><i class="fab fa-apple"></i> Apple</button>
+      <a href="/" style="color:#fff;opacity:.8">← Back to website</a>
     </div>
 
-  </div>
+    <div class="auth-right">
+      <h1>Create an account</h1>
+      <p>Already have an account? <a href="/login">Log in</a></p>
 
+      <form method="POST">
+        <div class="input-group">
+          <input name="first_name" placeholder="First name" required>
+          <input name="last_name" placeholder="Last name" required>
+        </div>
+        <input name="email" type="email" placeholder="Email address" required>
+        <input name="password" type="password" placeholder="Create password" required>
+
+        <div class="checkbox">
+          <input type="checkbox" required>
+          <span>I agree to the <a href="#">Terms & Conditions</a></span>
+        </div>
+
+        <button type="submit">Create account</button>
+      </form>
+
+      <div class="divider">or register with</div>
+
+      <!-- GOOGLE SIGN IN -->
+      <div id="g_id_onload"
+           data-client_id="YOUR_GOOGLE_CLIENT_ID"
+           data-context="signup"
+           data-ux_mode="popup"
+           data-callback="handleGoogle"
+           data-auto_prompt="false">
+      </div>
+
+      <div class="social">
+        <div class="g_id_signin" data-type="standard"></div>
+      </div>
+
+    </div>
+
+  </div>
 </div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>SmartRoutine</h4>
+      <p>AI-powered routine & productivity platform.</p>
+    </div>
+    <div>
+      <h4>Product</h4>
+      <a href="#">Features</a>
+      <a href="#">How it works</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <a href="#">Help</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <div class="social-icons">
+        <i class="fab fa-github"></i>
+        <i class="fab fa-linkedin"></i>
+        <i class="fab fa-instagram"></i>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 SmartRoutine. All rights reserved.
+  </div>
+</footer>
+
+<script>
+function handleGoogle(response){
+  // Send response.credential to backend for verification
+  console.log("Google token:", response.credential);
+}
+</script>
 
 </body>
 </html>
