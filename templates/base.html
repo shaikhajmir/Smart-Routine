@@ -8,19 +8,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-/* ---------------- RESET ---------------- */
+/* ================= RESET ================= */
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family:"Segoe UI",Arial,sans-serif;
 }
 body{
-  background: radial-gradient(circle at top, #1a0b00, #000);
+  background:radial-gradient(circle at top,#1a0b00,#000);
   color:#fff;
+  overflow-x:hidden;
 }
 
-/* ---------------- NAVBAR ---------------- */
+/* ================= NAVBAR ================= */
 header{
   display:flex;
   justify-content:space-between;
@@ -28,8 +29,8 @@ header{
   padding:18px 50px;
   position:sticky;
   top:0;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter: blur(10px);
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(10px);
   z-index:100;
 }
 header h1{
@@ -48,8 +49,9 @@ header a{
   border-radius:30px;
   font-weight:600;
 }
+.btn:hover{opacity:.9}
 
-/* ---------------- HERO ---------------- */
+/* ================= HERO ================= */
 .hero{
   text-align:center;
   padding:110px 20px 80px;
@@ -59,14 +61,12 @@ header a{
   margin-bottom:20px;
 }
 .hero p{
-  max-width:720px;
+  max-width:760px;
   margin:0 auto 30px;
   font-size:1.1rem;
-  opacity:0.85;
+  opacity:.85;
 }
-.hero-actions a{
-  margin:10px;
-}
+.hero-actions a{margin:10px}
 .ghost{
   border:1px solid #ff9f1a;
   padding:10px 22px;
@@ -75,14 +75,15 @@ header a{
   text-decoration:none;
 }
 
-/* ---------------- GLOW DEMO ---------------- */
+/* ================= GLOW CARD ================= */
 .glow-card{
   margin:50px auto 0;
   max-width:380px;
   padding:25px;
   background:#0c0c0c;
   border-radius:18px;
-  box-shadow:0 0 40px rgba(255,159,26,0.5);
+  box-shadow:0 0 45px rgba(255,159,26,.55);
+  animation:pulse 3s infinite;
 }
 .glow-card input{
   width:100%;
@@ -93,9 +94,9 @@ header a{
   color:#fff;
 }
 
-/* ---------------- HOW IT WORKS ---------------- */
+/* ================= SECTIONS ================= */
 .section{
-  padding:80px 20px;
+  padding:90px 20px;
   text-align:center;
 }
 .section h2{
@@ -105,63 +106,66 @@ header a{
 .section p{
   max-width:720px;
   margin:0 auto 50px;
-  opacity:0.8;
+  opacity:.8;
 }
 
-.steps{
-  display:flex;
-  gap:30px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-.step{
-  background:#0d0d0d;
-  padding:30px;
-  border-radius:18px;
-  width:260px;
-}
-.step span{
-  font-size:2rem;
-  color:#ff9f1a;
-}
-
-/* ---------------- FEATURES ---------------- */
-.features{
+/* ================= CARDS ================= */
+.grid{
   display:flex;
   flex-wrap:wrap;
-  gap:30px;
   justify-content:center;
+  gap:30px;
 }
-.feature{
+.card{
   width:260px;
   background:#0d0d0d;
   padding:30px;
   border-radius:18px;
 }
-.feature i{
+.card i{
   font-size:2rem;
   color:#ff9f1a;
   margin-bottom:12px;
 }
 
-/* ---------------- WHO IS IT FOR ---------------- */
-.audience{
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  flex-wrap:wrap;
+/* ================= COUNTERS ================= */
+.counters{
+  background:#050505;
 }
-.audience div{
-  width:260px;
+.counter-box{
+  width:220px;
   background:#0d0d0d;
-  padding:30px;
+  padding:35px 20px;
   border-radius:18px;
 }
+.counter{
+  font-size:2.4rem;
+  color:#ff9f1a;
+  font-weight:700;
+}
+.counter-box p{
+  margin-top:10px;
+  opacity:.8;
+}
 
-/* ---------------- FINAL CTA ---------------- */
+/* ================= TESTIMONIALS ================= */
+.testimonial{
+  width:300px;
+  background:#0d0d0d;
+  padding:30px;
+  border-radius:20px;
+  text-align:left;
+}
+.testimonial p{opacity:.85}
+.testimonial h4{
+  margin-top:15px;
+  color:#ff9f1a;
+}
+
+/* ================= CTA ================= */
 .final-cta{
   background:linear-gradient(to top,#000,#140700);
-  padding:90px 20px;
+  padding:100px 20px;
   text-align:center;
 }
 .final-cta h2{
@@ -169,32 +173,27 @@ header a{
   margin-bottom:20px;
 }
 
-/* ---------------- FOOTER ---------------- */
+/* ================= FOOTER ================= */
 footer{
   background:#000;
   padding:60px 20px 30px;
   border-top:1px solid #222;
 }
 .footer-grid{
+  max-width:1100px;
+  margin:auto;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:40px;
-  max-width:1100px;
-  margin:auto;
 }
-.footer-grid h4{
-  margin-bottom:15px;
-}
+.footer-grid h4{margin-bottom:15px}
 .footer-grid a{
   display:block;
   color:#aaa;
   text-decoration:none;
   margin-bottom:8px;
-  font-size:0.95rem;
 }
-.footer-grid a:hover{
-  color:#fff;
-}
+.footer-grid a:hover{color:#fff}
 .social-icons i{
   font-size:1.2rem;
   margin-right:12px;
@@ -203,18 +202,32 @@ footer{
 .footer-bottom{
   text-align:center;
   margin-top:40px;
-  font-size:0.9rem;
+  font-size:.9rem;
   color:#888;
 }
 
-/* ---------------- MOBILE ---------------- */
+/* ================= SCROLL ANIMATION ================= */
+.reveal{
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s ease;
+}
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ================= ANIMATION ================= */
+@keyframes pulse{
+  0%{box-shadow:0 0 25px rgba(255,159,26,.4)}
+  50%{box-shadow:0 0 55px rgba(255,159,26,.7)}
+  100%{box-shadow:0 0 25px rgba(255,159,26,.4)}
+}
+
+/* ================= MOBILE ================= */
 @media(max-width:768px){
-  header{
-    padding:15px 20px;
-  }
-  .hero h2{
-    font-size:2.2rem;
-  }
+  header{padding:15px 20px}
+  .hero h2{font-size:2.2rem}
 }
 </style>
 </head>
@@ -229,11 +242,11 @@ footer{
   </div>
 </header>
 
-<section class="hero">
+<section class="hero reveal">
   <h2>Build Discipline.<br>Track Accuracy.<br>Grow Daily.</h2>
   <p>
-    SmartRoutine helps students and professionals plan their daily routine,
-    visualize productivity, and improve habits using AI-powered insights.
+    SmartRoutine helps students and professionals manage daily routines,
+    visualize productivity, and improve habits using AI-driven insights.
   </p>
   <div class="hero-actions">
     <a class="btn" href="/register">Start Free</a>
@@ -241,41 +254,57 @@ footer{
   </div>
 
   <div class="glow-card">
-    <input placeholder="Ask AI: How was my routine today?" disabled>
+    <input placeholder="Ask AI: How productive was my day?" disabled>
   </div>
 </section>
 
-<section class="section">
-  <h2>How SmartRoutine Works</h2>
-  <p>Simple steps designed for real daily use.</p>
-  <div class="steps">
-    <div class="step"><span>1</span><p>Create your account</p></div>
-    <div class="step"><span>2</span><p>Add your daily routine</p></div>
-    <div class="step"><span>3</span><p>View charts & AI feedback</p></div>
+<section class="section reveal">
+  <h2>Why SmartRoutine?</h2>
+  <div class="grid">
+    <div class="card"><i class="fa-solid fa-calendar-days"></i><p>Plan daily routines</p></div>
+    <div class="card"><i class="fa-solid fa-chart-pie"></i><p>See productivity charts</p></div>
+    <div class="card"><i class="fa-solid fa-brain"></i><p>AI habit guidance</p></div>
+    <div class="card"><i class="fa-solid fa-note-sticky"></i><p>Daily reflection & notes</p></div>
   </div>
 </section>
 
-<section class="section">
-  <h2>Powerful Features</h2>
-  <div class="features">
-    <div class="feature"><i class="fa-solid fa-calendar-days"></i><p>Routine Planning</p></div>
-    <div class="feature"><i class="fa-solid fa-chart-pie"></i><p>Daily Analytics</p></div>
-    <div class="feature"><i class="fa-solid fa-brain"></i><p>AI Suggestions</p></div>
-    <div class="feature"><i class="fa-solid fa-note-sticky"></i><p>Notes & Reflections</p></div>
-    <div class="feature"><i class="fa-solid fa-wallet"></i><p>Expense Tracking</p></div>
+<section class="section counters reveal">
+  <h2>Growing With Our Users</h2>
+  <div class="grid">
+    <div class="counter-box">
+      <div class="counter" data-target="5000">0</div>
+      <p>Daily routines tracked</p>
+    </div>
+    <div class="counter-box">
+      <div class="counter" data-target="1200">0</div>
+      <p>Active students</p>
+    </div>
+    <div class="counter-box">
+      <div class="counter" data-target="92">0</div>
+      <p>% Productivity improvement</p>
+    </div>
   </div>
 </section>
 
-<section class="section">
-  <h2>Who Is It For?</h2>
-  <div class="audience">
-    <div>🎓 College Students</div>
-    <div>💻 IT Learners</div>
-    <div>🚀 Self-Improvers</div>
+<section class="section reveal">
+  <h2>What Users Say</h2>
+  <div class="grid">
+    <div class="testimonial">
+      <p>“SmartRoutine completely changed how I manage my college day.”</p>
+      <h4>— IT Student</h4>
+    </div>
+    <div class="testimonial">
+      <p>“Seeing my routine as charts makes me more disciplined.”</p>
+      <h4>— Engineering Student</h4>
+    </div>
+    <div class="testimonial">
+      <p>“Simple, clean, and actually useful every day.”</p>
+      <h4>— Self Learner</h4>
+    </div>
   </div>
 </section>
 
-<section class="final-cta">
+<section class="final-cta reveal">
   <h2>Start Improving Your Routine Today</h2>
   <a class="btn" href="/register">Create Free Account</a>
 </section>
@@ -311,6 +340,43 @@ footer{
     © 2025 SmartRoutine. All rights reserved.
   </div>
 </footer>
+
+<script>
+/* SCROLL REVEAL */
+const reveals=document.querySelectorAll('.reveal');
+window.addEventListener('scroll',()=>{
+  reveals.forEach(r=>{
+    if(r.getBoundingClientRect().top < window.innerHeight - 100){
+      r.classList.add('active');
+    }
+  })
+});
+
+/* COUNTER ANIMATION */
+const counters=document.querySelectorAll('.counter');
+let counterStarted=false;
+window.addEventListener('scroll',()=>{
+  if(counterStarted) return;
+  const section=document.querySelector('.counters');
+  if(section.getBoundingClientRect().top < window.innerHeight){
+    counterStarted=true;
+    counters.forEach(counter=>{
+      let target=+counter.dataset.target;
+      let count=0;
+      let step=target/100;
+      let interval=setInterval(()=>{
+        count+=step;
+        if(count>=target){
+          counter.innerText=target;
+          clearInterval(interval);
+        }else{
+          counter.innerText=Math.floor(count);
+        }
+      },20);
+    })
+  }
+});
+</script>
 
 </body>
 </html>
