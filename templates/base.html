@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SmartRoutine | AI Productivity for Students</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+/* ---------------- RESET ---------------- */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+body{
+  background: radial-gradient(circle at top, #1a0b00, #000);
+  color:#fff;
+}
+
+/* ---------------- NAVBAR ---------------- */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 50px;
+  position:sticky;
+  top:0;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  z-index:100;
+}
+header h1{
+  color:#ff9f1a;
+  font-size:1.5rem;
+}
+header a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:20px;
+}
+.btn{
+  background:#ff9f1a;
+  color:#000;
+  padding:10px 22px;
+  border-radius:30px;
+  font-weight:600;
+}
+
+/* ---------------- HERO ---------------- */
+.hero{
+  text-align:center;
+  padding:110px 20px 80px;
+}
+.hero h2{
+  font-size:3rem;
+  margin-bottom:20px;
+}
+.hero p{
+  max-width:720px;
+  margin:0 auto 30px;
+  font-size:1.1rem;
+  opacity:0.85;
+}
+.hero-actions a{
+  margin:10px;
+}
+.ghost{
+  border:1px solid #ff9f1a;
+  padding:10px 22px;
+  border-radius:30px;
+  color:#ff9f1a;
+  text-decoration:none;
+}
+
+/* ---------------- GLOW DEMO ---------------- */
+.glow-card{
+  margin:50px auto 0;
+  max-width:380px;
+  padding:25px;
+  background:#0c0c0c;
+  border-radius:18px;
+  box-shadow:0 0 40px rgba(255,159,26,0.5);
+}
+.glow-card input{
+  width:100%;
+  padding:14px;
+  background:#111;
+  border:none;
+  border-radius:12px;
+  color:#fff;
+}
+
+/* ---------------- HOW IT WORKS ---------------- */
+.section{
+  padding:80px 20px;
+  text-align:center;
+}
+.section h2{
+  font-size:2.4rem;
+  margin-bottom:20px;
+}
+.section p{
+  max-width:720px;
+  margin:0 auto 50px;
+  opacity:0.8;
+}
+
+.steps{
+  display:flex;
+  gap:30px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.step{
+  background:#0d0d0d;
+  padding:30px;
+  border-radius:18px;
+  width:260px;
+}
+.step span{
+  font-size:2rem;
+  color:#ff9f1a;
+}
+
+/* ---------------- FEATURES ---------------- */
+.features{
+  display:flex;
+  flex-wrap:wrap;
+  gap:30px;
+  justify-content:center;
+}
+.feature{
+  width:260px;
+  background:#0d0d0d;
+  padding:30px;
+  border-radius:18px;
+}
+.feature i{
+  font-size:2rem;
+  color:#ff9f1a;
+  margin-bottom:12px;
+}
+
+/* ---------------- WHO IS IT FOR ---------------- */
+.audience{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+.audience div{
+  width:260px;
+  background:#0d0d0d;
+  padding:30px;
+  border-radius:18px;
+}
+
+/* ---------------- FINAL CTA ---------------- */
+.final-cta{
+  background:linear-gradient(to top,#000,#140700);
+  padding:90px 20px;
+  text-align:center;
+}
+.final-cta h2{
+  font-size:2.5rem;
+  margin-bottom:20px;
+}
+
+/* ---------------- FOOTER ---------------- */
+footer{
+  background:#000;
+  padding:60px 20px 30px;
+  border-top:1px solid #222;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:40px;
+  max-width:1100px;
+  margin:auto;
+}
+.footer-grid h4{
+  margin-bottom:15px;
+}
+.footer-grid a{
+  display:block;
+  color:#aaa;
+  text-decoration:none;
+  margin-bottom:8px;
+  font-size:0.95rem;
+}
+.footer-grid a:hover{
+  color:#fff;
+}
+.social-icons i{
+  font-size:1.2rem;
+  margin-right:12px;
+  color:#ff9f1a;
+}
+.footer-bottom{
+  text-align:center;
+  margin-top:40px;
+  font-size:0.9rem;
+  color:#888;
+}
+
+/* ---------------- MOBILE ---------------- */
+@media(max-width:768px){
+  header{
+    padding:15px 20px;
+  }
+  .hero h2{
+    font-size:2.2rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SmartRoutine</h1>
+  <div>
+    <a href="/login">Login</a>
+    <a class="btn" href="/register">Get Started</a>
+  </div>
+</header>
+
+<section class="hero">
+  <h2>Build Discipline.<br>Track Accuracy.<br>Grow Daily.</h2>
+  <p>
+    SmartRoutine helps students and professionals plan their daily routine,
+    visualize productivity, and improve habits using AI-powered insights.
+  </p>
+  <div class="hero-actions">
+    <a class="btn" href="/register">Start Free</a>
+    <a class="ghost" href="/login">Login</a>
+  </div>
+
+  <div class="glow-card">
+    <input placeholder="Ask AI: How was my routine today?" disabled>
+  </div>
+</section>
+
+<section class="section">
+  <h2>How SmartRoutine Works</h2>
+  <p>Simple steps designed for real daily use.</p>
+  <div class="steps">
+    <div class="step"><span>1</span><p>Create your account</p></div>
+    <div class="step"><span>2</span><p>Add your daily routine</p></div>
+    <div class="step"><span>3</span><p>View charts & AI feedback</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Powerful Features</h2>
+  <div class="features">
+    <div class="feature"><i class="fa-solid fa-calendar-days"></i><p>Routine Planning</p></div>
+    <div class="feature"><i class="fa-solid fa-chart-pie"></i><p>Daily Analytics</p></div>
+    <div class="feature"><i class="fa-solid fa-brain"></i><p>AI Suggestions</p></div>
+    <div class="feature"><i class="fa-solid fa-note-sticky"></i><p>Notes & Reflections</p></div>
+    <div class="feature"><i class="fa-solid fa-wallet"></i><p>Expense Tracking</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Who Is It For?</h2>
+  <div class="audience">
+    <div>🎓 College Students</div>
+    <div>💻 IT Learners</div>
+    <div>🚀 Self-Improvers</div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>Start Improving Your Routine Today</h2>
+  <a class="btn" href="/register">Create Free Account</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>SmartRoutine</h4>
+      <p>AI-powered routine & productivity management platform.</p>
+    </div>
+    <div>
+      <h4>Product</h4>
+      <a href="#">Features</a>
+      <a href="#">How it works</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <div class="social-icons">
+        <i class="fab fa-github"></i>
+        <i class="fab fa-linkedin"></i>
+        <i class="fab fa-instagram"></i>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 SmartRoutine. All rights reserved.
+  </div>
+</footer>
+
+</body>
+</html>

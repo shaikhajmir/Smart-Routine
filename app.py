@@ -17,7 +17,9 @@ def load():
 
 def save(data):
     json.dump(data, open(DB, "w"), indent=2)
-
+@app.route("/")
+def base():
+    return render_template("base.html")
 @app.route("/", methods=["GET","POST"])
 def login():
     users = load()
@@ -69,5 +71,6 @@ def ai():
 def logout():
     session.clear()
     return redirect("/")
+
 
 app.run(debug=True)
