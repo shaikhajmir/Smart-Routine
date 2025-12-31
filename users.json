@@ -5,6 +5,13 @@
     },
     "shaikhajmirilal8@gmail.com": {
         "password": "scrypt:32768:8:1$nqYCTyZVnxzXcKBl$e9dcfca3bb35dacf28041de0f0f0207256df1f8208bc92cc5bb77ec3308aecea023c87fc73018d37d96f1276d408b907bc1a931ab76e4b185f25d3ab8f5243db",
-        "data": {}
+        "data": {},
+        "tasks": [
+            {
+                "task": "Coding",
+                "duration": "1",
+                "date": "2025-12-31"
+            }
+        ]
     }
 }

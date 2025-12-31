@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from datetime import date
+
 import json
 import os
 import requests
@@ -105,13 +107,36 @@ def login():
 # -----------------------------
 # DASHBOARD (PROTECTED)
 # -----------------------------
-@app.route("/dashboard")
+@app.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
+    users = load_users()
+    email = session["user"]
+
+    # Ensure user data exists
+    if "tasks" not in users[email]:
+        users[email]["tasks"] = []
+
+    # ADD TASK
+    if request.method == "POST":
+        task = request.form.get("task")
+        duration = request.form.get("duration")
+
+        users[email]["tasks"].append({
+            "task": task,
+            "duration": duration,
+            "date": str(date.today())
+        })
+
+        save_users(users)
+        return redirect(url_for("dashboard"))
+
     return render_template(
         "dashboard.html",
-        user=session.get("user")
+        user=email,
+        tasks=users[email]["tasks"]
     )
+
 
 
 # -----------------------------
