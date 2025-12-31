@@ -1,51 +1,251 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Dashboard | SmartRoutine</title>
-<link rel="stylesheet" href="/static/style.css">
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#1a0b00,#000);
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar{
+  width:240px;
+  background:#0b0b0b;
+  padding:25px 20px;
+  display:flex;
+  flex-direction:column;
+}
+.sidebar h2{
+  color:#ff9f1a;
+  margin-bottom:30px;
+}
+.sidebar a{
+  color:#cbd5f5;
+  text-decoration:none;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.sidebar a:hover,
+.sidebar a.active{
+  background:#111;
+  color:#ff9f1a;
+}
+.sidebar .bottom{
+  margin-top:auto;
+}
+
+/* ================= MAIN ================= */
+.main{
+  flex:1;
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  gap:25px;
+}
+
+/* ================= HEADER ================= */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.top h1{
+  font-size:1.8rem;
+}
+.top span{
+  opacity:.8;
+}
+
+/* ================= CARDS ================= */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.card{
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 0 25px rgba(0,0,0,.4);
+}
+.card h3{
+  margin-bottom:10px;
+  font-size:1.1rem;
+  color:#ff9f1a;
+}
+
+/* ================= ANALYTICS PLACEHOLDERS ================= */
+.circle{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  background:conic-gradient(#a855f7 0% 60%, #444 60% 100%);
+  margin:auto;
+}
+.bar{
+  height:100px;
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+}
+.bar div{
+  flex:1;
+  background:#a855f7;
+  border-radius:6px;
+}
+
+/* ================= TASKS ================= */
+.task{
+  background:#0e0e0e;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+.task small{
+  opacity:.7;
+}
+
+/* ================= INBOX ================= */
+.inbox-item{
+  background:#0e0e0e;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:900px){
+  .sidebar{
+    display:none;
+  }
+  body{
+    flex-direction:column;
+  }
+}
+</style>
 </head>
+
 <body>
-<header>
-<h1>SmartRoutine</h1>
-<nav>
-<a href="#">Dashboard</a>
-<a href="#calendar">Calendar</a>
-<a href="#notes">Notes</a>
-<a href="#ai">AI</a>
-<a href="/logout">Logout</a>
-</nav>
-</header>
 
-<section id="calendar" class="card animate"></section>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h2>SmartRoutine</h2>
 
-<section id="notes" class="card animate">
-<h3>Daily Notes</h3>
-<textarea id="notesTxt"></textarea>
-</section>
+  <a class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+  <a><i class="fa-solid fa-calendar-days"></i> Routine</a>
+  <a><i class="fa-solid fa-chart-pie"></i> Analytics</a>
+  <a><i class="fa-solid fa-note-sticky"></i> Notes</a>
+  <a><i class="fa-solid fa-brain"></i> AI Assistant</a>
 
-<section class="card animate">
-<h3>Ask AI</h3>
-<input id="prompt" placeholder="Ask AI about routine">
-<button onclick="askAI()">Ask</button>
-<div id="aiBox"></div>
-</section>
-
-<button onclick="saveAll()">Save All</button>
-
-<footer>
-<p>© 2025 SmartRoutine</p>
-<div class="social">
-<i class="fab fa-github"></i>
-<i class="fab fa-linkedin"></i>
-<i class="fab fa-instagram"></i>
+  <div class="bottom">
+    <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
 </div>
-<p><a href="#">Help</a> | <a href="#">Contact</a></p>
-</footer>
 
-<script src="/static/script.js"></script>
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOP -->
+  <div class="top">
+    <div>
+      <h1>Welcome, {{ user }}</h1>
+      <span>Here’s your productivity overview</span>
+    </div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="grid">
+    <div class="card">
+      <h3>AI Reports</h3>
+      <div class="circle"></div>
+      <p style="text-align:center;margin-top:10px;">60% Accuracy</p>
+    </div>
+
+    <div class="card">
+      <h3>Passing Rate</h3>
+      <div class="bar">
+        <div style="height:60%"></div>
+        <div style="height:80%"></div>
+        <div style="height:45%"></div>
+        <div style="height:70%"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Project Time</h3>
+      <div class="bar">
+        <div style="height:40%"></div>
+        <div style="height:65%"></div>
+        <div style="height:85%"></div>
+        <div style="height:55%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK + INBOX -->
+  <div class="grid">
+
+    <div class="card">
+      <h3>Task Manager</h3>
+
+      <div class="task">
+        <b>Study DSA</b>
+        <small>2 hours</small>
+      </div>
+
+      <div class="task">
+        <b>Build Project</b>
+        <small>1.5 hours</small>
+      </div>
+
+      <div class="task">
+        <b>Exercise</b>
+        <small>30 minutes</small>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Inbox / Notes</h3>
+
+      <div class="inbox-item">
+        <b>AI Suggestion</b>
+        <small>Reduce screen time today</small>
+      </div>
+
+      <div class="inbox-item">
+        <b>Note</b>
+        <small>Revise Python decorators</small>
+      </div>
+
+      <div class="inbox-item">
+        <b>Reminder</b>
+        <small>Meeting at 6 PM</small>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
 </body>
 </html>

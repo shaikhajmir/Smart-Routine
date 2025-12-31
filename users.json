@@ -1,6 +1,10 @@
 {
-  "ajmir": {
-    "password": "scrypt:32768:8:1$zz1RTLiZIS7spSEj$4e5a81e20b32854bbe472514bd1ef9701397d8bbe49455ff20462c28df5dce826213df505ebc1e592b619195b9c55ff053f7938f7047848feb52db9f0f38bc00",
-    "data": {}
-  }
+    "ajmir": {
+        "password": "scrypt:32768:8:1$zz1RTLiZIS7spSEj$4e5a81e20b32854bbe472514bd1ef9701397d8bbe49455ff20462c28df5dce826213df505ebc1e592b619195b9c55ff053f7938f7047848feb52db9f0f38bc00",
+        "data": {}
+    },
+    "shaikhajmirilal8@gmail.com": {
+        "password": "scrypt:32768:8:1$nqYCTyZVnxzXcKBl$e9dcfca3bb35dacf28041de0f0f0207256df1f8208bc92cc5bb77ec3308aecea023c87fc73018d37d96f1276d408b907bc1a931ab76e4b185f25d3ab8f5243db",
+        "data": {}
+    }
 }
