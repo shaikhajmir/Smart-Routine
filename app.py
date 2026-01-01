@@ -107,37 +107,102 @@ def login():
 # -----------------------------
 # DASHBOARD (PROTECTED)
 # -----------------------------
+from datetime import date, datetime
+from collections import defaultdict
+from flask import render_template, request, redirect, url_for, session
+from openai import OpenAI
+
+# Initialize OpenAI client (set OPENAI_API_KEY in environment)
+client = OpenAI()
+
 @app.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
     users = load_users()
     email = session["user"]
 
-    # Ensure user data exists
-    if "tasks" not in users[email]:
-        users[email]["tasks"] = []
+    # Ensure user structure
+    if email not in users:
+        users[email] = {}
+    users[email].setdefault("tasks", [])
 
-    # ADD TASK
+    # -----------------------------
+    # ADD TASK (FROM LEFT PANEL)
+    # -----------------------------
     if request.method == "POST":
         task = request.form.get("task")
-        duration = request.form.get("duration")
+        duration = int(request.form.get("duration"))   # ✅ FIXED (int)
+        task_date = request.form.get("date") or str(date.today())
 
         users[email]["tasks"].append({
             "task": task,
             "duration": duration,
-            "date": str(date.today())
+            "date": task_date
         })
 
         save_users(users)
         return redirect(url_for("dashboard"))
 
+    tasks = users[email]["tasks"]
+
+    # -----------------------------
+    # AUTO-UPDATE CHART DATA
+    # -----------------------------
+    total_hours = sum(int(t["duration"]) for t in tasks)
+
+    productive = int(total_hours * 0.7)
+    unproductive = total_hours - productive
+
+    # -----------------------------
+    # WEEKLY & MONTHLY REPORTS
+    # -----------------------------
+    weekly = defaultdict(int)
+    monthly = defaultdict(int)
+
+    for t in tasks:
+        d = datetime.strptime(t["date"], "%Y-%m-%d")
+        week_key = f"{d.year}-W{d.isocalendar().week}"
+        month_key = d.strftime("%Y-%m")
+
+        weekly[week_key] += int(t["duration"])
+        monthly[month_key] += int(t["duration"])
+
+    # -----------------------------
+    # AI TASK ANALYSIS (OPENAI)
+    # -----------------------------
+    ai_tip = "Add tasks to get AI productivity feedback."
+
+    if tasks:
+        task_text = "\n".join(
+            f"{t['task']} - {t['duration']} hrs on {t['date']}"
+            for t in tasks
+        )
+
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are a productivity coach."},
+                    {"role": "user", "content": f"Analyze my daily tasks:\n{task_text}"}
+                ]
+            )
+            ai_tip = response.choices[0].message.content
+        except Exception as e:
+            ai_tip = "AI service temporarily unavailable."
+
+    # -----------------------------
+    # RENDER DASHBOARD
+    # -----------------------------
     return render_template(
         "dashboard.html",
         user=email,
-        tasks=users[email]["tasks"]
+        tasks=tasks,
+        productive=productive,
+        unproductive=unproductive,
+        weekly=weekly,
+        monthly=monthly,
+        ai_tip=ai_tip
     )
-
-
 
 # -----------------------------
 # LOGOUT
@@ -183,6 +248,52 @@ def google_login():
 
     session["user"] = email
     return {"success": True}
+from openai import OpenAI
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def ai_analysis(tasks):
+    if not tasks:
+        return "Add tasks to get AI feedback."
+
+    text = "\n".join([f"{t['task']} - {t['duration']} hrs" for t in tasks])
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role":"system","content":"You are a productivity coach."},
+            {"role":"user","content":f"Analyze my tasks:\n{text}"}
+        ]
+    )
+    return response.choices[0].message.content
+@app.route("/daily-log", methods=["GET", "POST"])
+@login_required
+def daily_log():
+    users = load_users()
+    email = session["user"]
+
+    users[email].setdefault("activities", [])
+    users[email].setdefault("daily_logs", [])
+
+    if request.method == "POST":
+        date_val = request.form.get("date")
+        log = {}
+
+        for act in users[email]["activities"]:
+            hours = request.form.get(act)
+            log[act] = int(hours) if hours else 0
+
+        users[email]["daily_logs"].append({
+            "date": date_val,
+            "log": log
+        })
+
+        save_users(users)
+        return redirect(url_for("dashboard"))
+
+    return render_template(
+        "daily_log.html",
+        activities=users[email]["activities"]
+    )
 
 # -----------------------------
 # RUN SERVER

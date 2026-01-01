@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Daily Log | SmartRoutine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  background:#0b0b0b;
+  color:#fff;
+  font-family:Segoe UI;
+}
+.container{
+  max-width:600px;
+  margin:40px auto;
+  background:#111;
+  padding:25px;
+  border-radius:18px;
+}
+input,button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+}
+button{
+  background:#ff9f1a;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Daily Time Log</h2>
+
+  <form method="POST">
+    <input type="date" name="date" required>
+
+    {% for act in activities %}
+      <label>{{ act }} (hrs)</label>
+      <input type="number" name="{{ act }}" step="0.5">
+    {% endfor %}
+
+    <button>Save Log</button>
+  </form>
+</div>
+
+</body>
+</html>
