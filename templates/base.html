@@ -1,382 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SmartRoutine | AI Productivity for Students</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartRoutine | Master Your Day</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ================= VARIABLES ================= */
+    :root {
+      --bg-deep: #020617;
+      --primary: #8b5cf6;
+      --accent: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --glass: rgba(255, 255, 255, 0.05);
+      --border-glass: rgba(255, 255, 255, 0.1);
+    }
 
-<style>
-/* ================= RESET ================= */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:"Segoe UI",Arial,sans-serif;
-}
-body{
-  background:radial-gradient(circle at top,#1a0b00,#000);
-  color:#fff;
-  overflow-x:hidden;
-}
+    /* ================= RESET ================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Outfit", sans-serif;
+    }
 
-/* ================= NAVBAR ================= */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 50px;
-  position:sticky;
-  top:0;
-  background:rgba(0,0,0,.65);
-  backdrop-filter:blur(10px);
-  z-index:100;
-}
-header h1{
-  color:#ff9f1a;
-  font-size:1.5rem;
-}
-header a{
-  color:#fff;
-  text-decoration:none;
-  margin-left:20px;
-}
-.btn{
-  background:#ff9f1a;
-  color:#000;
-  padding:10px 22px;
-  border-radius:30px;
-  font-weight:600;
-}
-.btn:hover{opacity:.9}
+    body {
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.15), transparent 40%);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
 
-/* ================= HERO ================= */
-.hero{
-  text-align:center;
-  padding:110px 20px 80px;
-}
-.hero h2{
-  font-size:3rem;
-  margin-bottom:20px;
-}
-.hero p{
-  max-width:760px;
-  margin:0 auto 30px;
-  font-size:1.1rem;
-  opacity:.85;
-}
-.hero-actions a{margin:10px}
-.ghost{
-  border:1px solid #ff9f1a;
-  padding:10px 22px;
-  border-radius:30px;
-  color:#ff9f1a;
-  text-decoration:none;
-}
+    /* ================= UTILS ================= */
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* ================= GLOW CARD ================= */
-.glow-card{
-  margin:50px auto 0;
-  max-width:380px;
-  padding:25px;
-  background:#0c0c0c;
-  border-radius:18px;
-  box-shadow:0 0 45px rgba(255,159,26,.55);
-  animation:pulse 3s infinite;
-}
-.glow-card input{
-  width:100%;
-  padding:14px;
-  background:#111;
-  border:none;
-  border-radius:12px;
-  color:#fff;
-}
+    .btn {
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: 0.3s;
+      display: inline-block;
+    }
 
-/* ================= SECTIONS ================= */
-.section{
-  padding:90px 20px;
-  text-align:center;
-}
-.section h2{
-  font-size:2.4rem;
-  margin-bottom:20px;
-}
-.section p{
-  max-width:720px;
-  margin:0 auto 50px;
-  opacity:.8;
-}
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
 
-/* ================= CARDS ================= */
-.grid{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:30px;
-}
-.card{
-  width:260px;
-  background:#0d0d0d;
-  padding:30px;
-  border-radius:18px;
-}
-.card i{
-  font-size:2rem;
-  color:#ff9f1a;
-  margin-bottom:12px;
-}
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+    }
 
-/* ================= COUNTERS ================= */
-.counters{
-  background:#050505;
-}
-.counter-box{
-  width:220px;
-  background:#0d0d0d;
-  padding:35px 20px;
-  border-radius:18px;
-}
-.counter{
-  font-size:2.4rem;
-  color:#ff9f1a;
-  font-weight:700;
-}
-.counter-box p{
-  margin-top:10px;
-  opacity:.8;
-}
+    .btn-outline {
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+    }
 
-/* ================= TESTIMONIALS ================= */
-.testimonial{
-  width:300px;
-  background:#0d0d0d;
-  padding:30px;
-  border-radius:20px;
-  text-align:left;
-}
-.testimonial p{opacity:.85}
-.testimonial h4{
-  margin-top:15px;
-  color:#ff9f1a;
-}
+    .btn-outline:hover {
+      background: var(--glass);
+    }
 
-/* ================= CTA ================= */
-.final-cta{
-  background:linear-gradient(to top,#000,#140700);
-  padding:100px 20px;
-  text-align:center;
-}
-.final-cta h2{
-  font-size:2.5rem;
-  margin-bottom:20px;
-}
+    /* ================= NAVBAR ================= */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(2, 6, 23, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-glass);
+    }
 
-/* ================= FOOTER ================= */
-footer{
-  background:#000;
-  padding:60px 20px 30px;
-  border-top:1px solid #222;
-}
-.footer-grid{
-  max-width:1100px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:40px;
-}
-.footer-grid h4{margin-bottom:15px}
-.footer-grid a{
-  display:block;
-  color:#aaa;
-  text-decoration:none;
-  margin-bottom:8px;
-}
-.footer-grid a:hover{color:#fff}
-.social-icons i{
-  font-size:1.2rem;
-  margin-right:12px;
-  color:#ff9f1a;
-}
-.footer-bottom{
-  text-align:center;
-  margin-top:40px;
-  font-size:.9rem;
-  color:#888;
-}
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-/* ================= SCROLL ANIMATION ================= */
-.reveal{
-  opacity:0;
-  transform:translateY(40px);
-  transition:1s ease;
-}
-.reveal.active{
-  opacity:1;
-  transform:translateY(0);
-}
+    .brand i {
+      color: var(--primary);
+    }
 
-/* ================= ANIMATION ================= */
-@keyframes pulse{
-  0%{box-shadow:0 0 25px rgba(255,159,26,.4)}
-  50%{box-shadow:0 0 55px rgba(255,159,26,.7)}
-  100%{box-shadow:0 0 25px rgba(255,159,26,.4)}
-}
+    /* ================= HERO ================= */
+    .hero {
+      text-align: center;
+      padding: 120px 20px 80px;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* ================= MOBILE ================= */
-@media(max-width:768px){
-  header{padding:15px 20px}
-  .hero h2{font-size:2.2rem}
-}
-</style>
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      line-height: 1.1;
+      background: linear-gradient(to right, white, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .hero-visual {
+      margin: 60px auto 0;
+      width: 90%;
+      max-width: 1000px;
+      height: 500px;
+      background: #0f172a;
+      border-radius: 20px;
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 20px 80px -20px rgba(139, 92, 246, 0.3);
+      position: relative;
+      overflow: hidden;
+      background-image: url('https://images.unsplash.com/photo-1555421689-d68471e189f2?q=80&w=2070&auto=format&fit=crop');
+      /* Placeholder Dashboard Img */
+      background-size: cover;
+      background-position: center;
+      opacity: 0.9;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--bg-deep), transparent);
+    }
+
+    /* ================= FEATURES ================= */
+    .section {
+      padding: 100px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .bento-card {
+      background: var(--glass);
+      border: 1px solid var(--border-glass);
+      padding: 40px;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+    }
+
+    .bento-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      border-top: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <h1>SmartRoutine</h1>
-  <div>
-    <a href="/login">Login</a>
-    <a class="btn" href="/register">Get Started</a>
-  </div>
-</header>
+  <header>
+    <div class="brand"><i class="fa-solid fa-cube"></i> SmartRoutine</div>
+    <div style="display:flex; gap:15px;">
+      <a href="/login" class="btn btn-outline" style="border:none;">Login</a>
+      <a href="/register" class="btn btn-primary">Get Started</a>
+    </div>
+  </header>
 
-<section class="hero reveal">
-  <h2>Build Discipline.<br>Track Accuracy.<br>Grow Daily.</h2>
-  <p>
-    SmartRoutine helps students and professionals manage daily routines,
-    visualize productivity, and improve habits using AI-driven insights.
-  </p>
-  <div class="hero-actions">
-    <a class="btn" href="/register">Start Free</a>
-    <a class="ghost" href="/login">Login</a>
-  </div>
+  <section class="hero">
+    <h1>Discipline.<br>Analytics.<br>Growth.</h1>
+    <p>The all-in-one platform to track habits, visualize productivity, and get AI coaching.</p>
+    <div style="display:flex; gap:20px; justify-content:center;">
+      <a href="/register" class="btn btn-primary">Start for Free</a>
+      <a href="#features" class="btn btn-outline">Learn More</a>
+    </div>
 
-  <div class="glow-card">
-    <input placeholder="Ask AI: How productive was my day?" disabled>
-  </div>
-</section>
-
-<section class="section reveal">
-  <h2>Why SmartRoutine?</h2>
-  <div class="grid">
-    <div class="card"><i class="fa-solid fa-calendar-days"></i><p>Plan daily routines</p></div>
-    <div class="card"><i class="fa-solid fa-chart-pie"></i><p>See productivity charts</p></div>
-    <div class="card"><i class="fa-solid fa-brain"></i><p>AI habit guidance</p></div>
-    <div class="card"><i class="fa-solid fa-note-sticky"></i><p>Daily reflection & notes</p></div>
-  </div>
-</section>
-
-<section class="section counters reveal">
-  <h2>Growing With Our Users</h2>
-  <div class="grid">
-    <div class="counter-box">
-      <div class="counter" data-target="5000">0</div>
-      <p>Daily routines tracked</p>
-    </div>
-    <div class="counter-box">
-      <div class="counter" data-target="1200">0</div>
-      <p>Active students</p>
-    </div>
-    <div class="counter-box">
-      <div class="counter" data-target="92">0</div>
-      <p>% Productivity improvement</p>
-    </div>
-  </div>
-</section>
-
-<section class="section reveal">
-  <h2>What Users Say</h2>
-  <div class="grid">
-    <div class="testimonial">
-      <p>“SmartRoutine completely changed how I manage my college day.”</p>
-      <h4>— IT Student</h4>
-    </div>
-    <div class="testimonial">
-      <p>“Seeing my routine as charts makes me more disciplined.”</p>
-      <h4>— Engineering Student</h4>
-    </div>
-    <div class="testimonial">
-      <p>“Simple, clean, and actually useful every day.”</p>
-      <h4>— Self Learner</h4>
-    </div>
-  </div>
-</section>
-
-<section class="final-cta reveal">
-  <h2>Start Improving Your Routine Today</h2>
-  <a class="btn" href="/register">Create Free Account</a>
-</section>
-
-<footer>
-  <div class="footer-grid">
-    <div>
-      <h4>SmartRoutine</h4>
-      <p>AI-powered routine & productivity management platform.</p>
-    </div>
-    <div>
-      <h4>Product</h4>
-      <a href="#">Features</a>
-      <a href="#">How it works</a>
-      <a href="#">Pricing</a>
-    </div>
-    <div>
-      <h4>Support</h4>
-      <a href="#">Help Center</a>
-      <a href="#">Contact</a>
-      <a href="#">Privacy Policy</a>
-    </div>
-    <div>
-      <h4>Connect</h4>
-      <div class="social-icons">
-        <i class="fab fa-github"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
+    <div class="hero-visual">
+      <div class="hero-overlay"></div>
+      <!-- In a real app, I'd put a screenshot of the dashboard here -->
+      <div style="position:absolute; top:20%; left:50%; transform:translateX(-50%); text-align:center;">
+        <i class="fa-solid fa-chart-line" style="font-size:5rem; color:var(--primary); opacity:0.8;"></i>
+        <div style="margin-top:20px; font-size:1.5rem; font-weight:700;">Dashboard Preview</div>
       </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    © 2025 SmartRoutine. All rights reserved.
-  </div>
-</footer>
+  </section>
 
-<script>
-/* SCROLL REVEAL */
-const reveals=document.querySelectorAll('.reveal');
-window.addEventListener('scroll',()=>{
-  reveals.forEach(r=>{
-    if(r.getBoundingClientRect().top < window.innerHeight - 100){
-      r.classList.add('active');
-    }
-  })
-});
+  <section class="section reveal" id="features">
+    <h2 class="section-title">Everything You Need</h2>
+    <div class="bento-grid">
+      <div class="bento-card">
+        <div class="bento-icon"><i class="fa-solid fa-fire"></i></div>
+        <h3>Streaks & Gamification</h3>
+        <p style="margin-top:10px; opacity:0.7;">Build consistent habits with daily streaks and unlockable badges.</p>
+      </div>
+      <div class="bento-card">
+        <div class="bento-icon"><i class="fa-solid fa-chart-pie"></i></div>
+        <h3>Visual Analytics</h3>
+        <p style="margin-top:10px; opacity:0.7;">Understand where your time goes with heatmaps and charts.</p>
+      </div>
+      <div class="bento-card">
+        <div class="bento-icon"><i class="fa-solid fa-robot"></i></div>
+        <h3>AI Coaching</h3>
+        <p style="margin-top:10px; opacity:0.7;">Get personalized advice from our AI based on your daily logs.</p>
+      </div>
+      <div class="bento-card" style="grid-column: 1/-1;">
+        <div class="bento-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <h3>Work Anywhere</h3>
+        <p style="margin-top:10px; opacity:0.7;">Fully responsive design that looks great on desktop, tablet, and
+          mobile.</p>
+      </div>
+    </div>
+  </section>
 
-/* COUNTER ANIMATION */
-const counters=document.querySelectorAll('.counter');
-let counterStarted=false;
-window.addEventListener('scroll',()=>{
-  if(counterStarted) return;
-  const section=document.querySelector('.counters');
-  if(section.getBoundingClientRect().top < window.innerHeight){
-    counterStarted=true;
-    counters.forEach(counter=>{
-      let target=+counter.dataset.target;
-      let count=0;
-      let step=target/100;
-      let interval=setInterval(()=>{
-        count+=step;
-        if(count>=target){
-          counter.innerText=target;
-          clearInterval(interval);
-        }else{
-          counter.innerText=Math.floor(count);
-        }
-      },20);
-    })
-  }
-});
-</script>
+  <!-- TIMELINE SECTION -->
+  <section style="padding: 100px 20px; max-width: 1000px; margin: 0 auto;">
+    <h2 class="section-title">How It Works</h2>
+    <div style="display: flex; flex-direction: column; gap: 40px; position: relative; padding-left: 30px;">
+      <div style="position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px; background: var(--border-glass);">
+      </div>
+
+      <div style="position: relative;">
+        <div
+          style="position: absolute; left: -30px; background: var(--primary); width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow);">
+        </div>
+        <h3 style="margin-bottom: 10px; color: var(--primary);">1. Track Your Day</h3>
+        <p style="color: var(--text-muted);">Log your activities and moods effortlessly with just a few clicks.</p>
+      </div>
+
+      <div style="position: relative;">
+        <div
+          style="position: absolute; left: -30px; background: var(--accent); width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 0 10px cyan;">
+        </div>
+        <h3 style="margin-bottom: 10px; color: var(--accent);">2. Visualize Progress</h3>
+        <p style="color: var(--text-muted);">See where your time goes with heatmaps, charts, and weekly reports.</p>
+      </div>
+
+      <div style="position: relative;">
+        <div
+          style="position: absolute; left: -30px; background: var(--secondary); width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 0 10px pink;">
+        </div>
+        <h3 style="margin-bottom: 10px; color: var(--secondary);">3. Optimize & Grow</h3>
+        <p style="color: var(--text-muted);">Get AI-powered insights to refine your schedule and reach your goals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section style="padding: 60px 20px; max-width: 800px; margin: 0 auto 60px;">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3 onclick="this.nextElementSibling.classList.toggle('show')">Is SmartRoutine free to use? <i
+          class="fa-solid fa-chevron-down" style="float: right; font-size: 0.9rem;"></i></h3>
+      <div class="faq-content">
+        <p>Yes! The core features including logging, basic charts, and profile are completely free.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <h3 onclick="this.nextElementSibling.classList.toggle('show')">How does the AI Coaching work? <i
+          class="fa-solid fa-chevron-down" style="float: right; font-size: 0.9rem;"></i></h3>
+      <div class="faq-content">
+        <p>Our AI analyzes your daily task descriptions and duration to provide personalized productivity tips.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <h3 onclick="this.nextElementSibling.classList.toggle('show')">Can I export my data? <i
+          class="fa-solid fa-chevron-down" style="float: right; font-size: 0.9rem;"></i></h3>
+      <div class="faq-content">
+        <p>Absolutely. You can export your entire history as a JSON file from your Profile page.</p>
+      </div>
+    </div>
+
+    <style>
+      .faq-item {
+        border-bottom: 1px solid var(--border-glass);
+        margin-bottom: 15px;
+      }
+
+      .faq-item h3 {
+        padding: 15px 0;
+        cursor: pointer;
+        font-size: 1.1rem;
+        user-select: none;
+      }
+
+      .faq-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: 0.3s;
+        color: var(--text-muted);
+      }
+
+      .faq-content.show {
+        max-height: 200px;
+        padding-bottom: 15px;
+      }
+    </style>
+  </section>
+
+  <!-- LOGOS SECTION -->
+  <section
+    style="padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass); background: rgba(0,0,0,0.2);">
+    <p
+      style="color: var(--text-muted); margin-bottom: 30px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem;">
+      Trusted by productive teams at</p>
+    <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; opacity: 0.6;">
+      <i class="fa-brands fa-google" style="font-size: 2rem;"></i>
+      <i class="fa-brands fa-microsoft" style="font-size: 2rem;"></i>
+      <i class="fa-brands fa-spotify" style="font-size: 2rem;"></i>
+      <i class="fa-brands fa-aws" style="font-size: 2rem;"></i>
+      <i class="fa-brands fa-stripe" style="font-size: 2rem;"></i>
+    </div>
+  </section>
+
+  <!-- ENHANCED FOOTER -->
+  <footer
+    style="padding: 80px 20px 40px; border-top: 1px solid var(--border-glass); background: var(--bg-deep); text-align: left;">
+    <div
+      style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
+      <div>
+        <div
+          style="font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+          <i class="fa-solid fa-cube" style="color: var(--primary);"></i> SmartRoutine
+        </div>
+        <p style="color: var(--text-muted); line-height: 1.6;">The ultimate productivity platform for students and
+          professionals. Build habits that stick.</p>
+      </div>
+
+      <div>
+        <h4 style="color: white; margin-bottom: 20px;">Product</h4>
+        <a href="#" style="display: block; color: var(--text-muted); margin-bottom: 10px;">Features</a>
+        <a href="#" style="display: block; color: var(--text-muted); margin-bottom: 10px;">Pricing</a>
+        <a href="#" style="display: block; color: var(--text-muted); margin-bottom: 10px;">Changelog</a>
+      </div>
+
+      <div>
+        <h4 style="color: white; margin-bottom: 20px;">Resources</h4>
+        <a href="#" style="display: block; color: var(--text-muted); margin-bottom: 10px;">Documentation</a>
+        <a href="#" style="display: block; color: var(--text-muted); margin-bottom: 10px;">Community</a>
+        <a href="#" style="display: block; color: var(--text-muted); margin-bottom: 10px;">Blog</a>
+      </div>
+
+      <div>
+        <h4 style="color: white; margin-bottom: 20px;">Stay Updated</h4>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Join 10,000+ productivity
+          enthusiasts.</p>
+        <form style="display: flex; gap: 10px;">
+          <input type="email" placeholder="Enter email"
+            style="padding: 10px; border-radius: 8px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.05); color: white; width: 100%;">
+          <button class="btn btn-primary" style="padding: 10px 15px; border-radius: 8px;"><i
+              class="fa-solid fa-paper-plane"></i></button>
+        </form>
+        <div style="margin-top: 20px; display: flex; gap: 15px;">
+          <a href="#"><i class="fa-brands fa-twitter" style="font-size: 1.2rem; color: var(--text-muted);"></i></a>
+          <a href="#"><i class="fa-brands fa-github" style="font-size: 1.2rem; color: var(--text-muted);"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin" style="font-size: 1.2rem; color: var(--text-muted);"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div
+      style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border-glass); color: var(--text-muted); font-size: 0.9rem; display:flex; justify-content:space-between; align-items:center;">
+      <span>&copy; 2026 SmartRoutine. All rights reserved.</span>
+      <div style="display:flex; gap:20px;">
+        <a href="#" style="color:var(--text-muted); text-decoration:none;">Privacy Policy</a>
+        <a href="#" style="color:var(--text-muted); text-decoration:none;">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
 
 </body>
+
 </html>

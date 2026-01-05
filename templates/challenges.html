@@ -1,0 +1,280 @@
+{% extends "layout.html" %}
+
+{% block title %}Challenges | SmartRoutine{% endblock %}
+
+{% block content %}
+<div class="page-header" style="margin-bottom: 30px;">
+    <h1
+        style="font-size:2.5rem; background: linear-gradient(135deg, #ec4899, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        🎯 Challenges</h1>
+    <p style="color:var(--text-muted);">Push your limits with daily and weekly challenges!</p>
+</div>
+
+<style>
+    .challenges-grid {
+        display: grid;
+        gap: 30px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .challenge-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .challenge-card.daily {
+        background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(139, 92, 246, 0.02));
+        border-color: rgba(236, 72, 153, 0.2);
+    }
+
+    .challenge-card.weekly {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(6, 182, 212, 0.02));
+        border-color: rgba(139, 92, 246, 0.2);
+    }
+
+    .challenge-card.completed {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.05));
+        border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    .challenge-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .challenge-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .challenge-type {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .challenge-type.daily {
+        background: rgba(236, 72, 153, 0.2);
+        color: #ec4899;
+    }
+
+    .challenge-type.weekly {
+        background: rgba(139, 92, 246, 0.2);
+        color: #8b5cf6;
+    }
+
+    .challenge-desc {
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .progress-section {
+        margin-bottom: 15px;
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
+
+    .progress-bar {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        height: 12px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        border-radius: 10px;
+        transition: width 0.5s ease-out;
+        position: relative;
+    }
+
+    .progress-fill.complete {
+        background: linear-gradient(90deg, #22c55e, #10b981);
+    }
+
+    .progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    .reward-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .timer {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .stats-summary {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .stat-box {
+        background: rgba(255, 255, 255, 0.02);
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 5px;
+    }
+
+    .completion-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 3rem;
+        opacity: 0.3;
+    }
+</style>
+
+<div class="challenges-grid">
+    <!-- STATS SUMMARY -->
+    <div class="stats-summary">
+        <h2 style="margin-bottom: 10px;">Your Challenge Stats</h2>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value">{{ challenges|length }}</div>
+                <div class="stat-label">Active Challenges</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{{ completed_count }}</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{{ user.data.get('avatar', '🦁') }}</div>
+                <div class="stat-label">Your Avatar</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACTIVE CHALLENGES -->
+    {% for challenge in challenges %}
+    {% set progress_pct = (challenge.progress / challenge.target * 100) | round | int %}
+    {% set is_complete = challenge.progress >= challenge.target %}
+
+    <div class="challenge-card {{ challenge.type }} {% if is_complete %}completed{% endif %}">
+        {% if is_complete %}
+        <div class="completion-badge">✅</div>
+        {% endif %}
+
+        <div class="challenge-header">
+            <div>
+                <div class="challenge-title">{{ challenge.reward }} {{ challenge.title }}</div>
+                <span class="challenge-type {{ challenge.type }}">{{ challenge.type }}</span>
+            </div>
+        </div>
+
+        <div class="challenge-desc">{{ challenge.desc }}</div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span style="font-weight:600;">Progress: {{ challenge.progress }} / {{ challenge.target }}</span>
+                <span style="color:var(--accent);">{{ progress_pct }}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill {% if is_complete %}complete{% endif %}"
+                    style="width: {{ progress_pct if progress_pct < 100 else 100 }}%"></div>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+            <div class="reward-badge">
+                <span>Reward:</span>
+                <span style="font-size:1.2rem;">{{ challenge.reward }}</span>
+            </div>
+            <div class="timer">
+                <i class="fa-solid fa-clock"></i>
+                Expires: {{ challenge.expires }}
+            </div>
+        </div>
+
+        {% if is_complete %}
+        <div
+            style="margin-top:15px; padding:10px; background:rgba(34,197,94,0.1); border-radius:8px; text-align:center; color:#22c55e; font-weight:600;">
+            🎉 Challenge Completed! Reward Unlocked!
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="challenge-card" style="text-align:center; padding:60px;">
+        <div style="font-size:3rem; margin-bottom:20px;">🎯</div>
+        <h3>No Active Challenges</h3>
+        <p style="color:var(--text-muted); margin-top:10px;">New challenges will be assigned automatically. Check back
+            soon!</p>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Auto-refresh every 30 seconds to update progress
+    setTimeout(() => location.reload(), 30000);
+</script>
+{% endblock %}

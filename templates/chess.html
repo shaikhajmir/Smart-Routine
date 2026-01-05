@@ -1,0 +1,337 @@
+{% extends "layout.html" %}
+
+{% block title %}Chess Match | SmartRoutine{% endblock %}
+
+{% block content %}
+<div class="page-header" style="margin-bottom: 30px;">
+    <h1
+        style="font-size:2.5rem; background: linear-gradient(135deg, #8b5cf6, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        ♟️ Chess Match</h1>
+    <p style="color:var(--text-muted);">{{ opponent_name }} vs You</p>
+</div>
+
+<style>
+    .chess-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .game-info {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .player-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .player-avatar {
+        font-size: 2.5rem;
+    }
+
+    .board-container {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+    }
+
+    #chessboard {
+        width: 500px;
+        height: 500px;
+    }
+
+    .square {
+        width: 12.5%;
+        height: 12.5%;
+        float: left;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .square.light {
+        background: #f0d9b5;
+    }
+
+    .square.dark {
+        background: #b58863;
+    }
+
+    .square.selected {
+        background: #7fc97f !important;
+    }
+
+    .square.valid-move {
+        background: #aaffaa !important;
+    }
+
+    .piece {
+        font-size: 3rem;
+        text-align: center;
+        line-height: 62.5px;
+        user-select: none;
+    }
+
+    .move-history {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .move-item {
+        padding: 8px;
+        margin-bottom: 5px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        font-family: monospace;
+    }
+
+    .status-message {
+        text-align: center;
+        padding: 15px;
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="chess-container">
+    <!-- GAME INFO -->
+    <div class="game-info">
+        <div class="player-info">
+            <div class="player-avatar">{{ opponent_avatar }}</div>
+            <div>
+                <div style="font-weight: 700;">{{ opponent_name }}</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">Black</div>
+            </div>
+        </div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);">VS</div>
+        <div class="player-info">
+            <div class="player-avatar">{{ user.data.get('avatar', '👤') }}</div>
+            <div>
+                <div style="font-weight: 700;">You</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">White</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="status-message" id="status">
+        White's turn
+    </div>
+
+    <!-- CHESS BOARD -->
+    <div class="board-container">
+        <div id="chessboard"></div>
+    </div>
+
+    <!-- MOVE HISTORY -->
+    <div class="move-history">
+        <h3 style="margin-bottom: 15px;">Move History</h3>
+        <div id="moves"></div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="resetGame()" class="btn" style="background: rgba(239,68,68,0.2); color: #ef4444;">Reset
+            Game</button>
+        <a href="/h2h" class="btn" style="background: #334155; margin-left: 10px;">Back to Battles</a>
+    </div>
+</div>
+
+<!-- Chess.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<script>
+    // Initialize Chess.js
+    const chess = new Chess();
+
+    const PIECES = {
+        'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙',
+        'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟'
+    };
+
+    let selectedSquare = null;
+    let validMoves = [];
+
+    function coordsToSquare(row, col) {
+        return String.fromCharCode(97 + col) + (8 - row);
+    }
+
+    function renderBoard() {
+        const boardEl = document.getElementById('chessboard');
+        boardEl.innerHTML = '';
+
+        const board = chess.board();
+
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const square = document.createElement('div');
+                square.className = 'square ' + ((row + col) % 2 === 0 ? 'light' : 'dark');
+                square.dataset.row = row;
+                square.dataset.col = col;
+                square.dataset.square = coordsToSquare(row, col);
+
+                const piece = board[row][col];
+                if (piece) {
+                    const pieceEl = document.createElement('div');
+                    pieceEl.className = 'piece';
+                    pieceEl.textContent = PIECES[piece.color === 'w' ? piece.type.toUpperCase() : piece.type];
+                    square.appendChild(pieceEl);
+                }
+
+                // Highlight selected square
+                if (selectedSquare && selectedSquare === coordsToSquare(row, col)) {
+                    square.classList.add('selected');
+                }
+
+                // Highlight valid moves
+                if (validMoves.includes(coordsToSquare(row, col))) {
+                    square.classList.add('valid-move');
+                }
+
+                square.onclick = () => handleSquareClick(row, col);
+                boardEl.appendChild(square);
+            }
+        }
+    }
+
+    function handleSquareClick(row, col) {
+        const clickedSquare = coordsToSquare(row, col);
+
+        if (selectedSquare) {
+            // Try to make a move
+            const move = chess.move({
+                from: selectedSquare,
+                to: clickedSquare,
+                promotion: 'q' // Always promote to queen for simplicity
+            });
+
+            if (move) {
+                // Move was successful
+                updateMoveHistory(move);
+                updateStatus();
+                selectedSquare = null;
+                validMoves = [];
+                renderBoard();
+
+                // Check for game over
+                if (chess.game_over()) {
+                    handleGameOver();
+                }
+            } else {
+                // Invalid move, try selecting new piece
+                selectSquare(clickedSquare);
+            }
+        } else {
+            // Select a piece
+            selectSquare(clickedSquare);
+        }
+    }
+
+    function selectSquare(square) {
+        const piece = chess.get(square);
+
+        // Only select if it's the current player's piece
+        if (piece && piece.color === chess.turn()) {
+            selectedSquare = square;
+
+            // Get all valid moves for this piece
+            const moves = chess.moves({ square: square, verbose: true });
+            validMoves = moves.map(m => m.to);
+
+            renderBoard();
+        } else {
+            selectedSquare = null;
+            validMoves = [];
+            renderBoard();
+        }
+    }
+
+    function updateStatus() {
+        const status = document.getElementById('status');
+        let statusText = '';
+
+        if (chess.in_checkmate()) {
+            statusText = chess.turn() === 'w' ? '🏆 Black wins by checkmate!' : '🏆 White wins by checkmate!';
+        } else if (chess.in_draw()) {
+            statusText = '🤝 Game drawn';
+        } else if (chess.in_stalemate()) {
+            statusText = '🤝 Stalemate';
+        } else if (chess.in_threefold_repetition()) {
+            statusText = '🤝 Draw by repetition';
+        } else if (chess.insufficient_material()) {
+            statusText = '🤝 Draw by insufficient material';
+        } else {
+            const turn = chess.turn() === 'w' ? 'White' : 'Black';
+            statusText = turn + "'s turn";
+
+            if (chess.in_check()) {
+                statusText += ' - ⚠️ CHECK!';
+            }
+        }
+
+        status.textContent = statusText;
+    }
+
+    function updateMoveHistory(move) {
+        const movesEl = document.getElementById('moves');
+        const moveNumber = Math.floor(chess.history().length / 2) + 1;
+        const moveColor = move.color === 'w' ? 'White' : 'Black';
+
+        const moveItem = document.createElement('div');
+        moveItem.className = 'move-item';
+        moveItem.textContent = `${moveNumber}. ${moveColor}: ${move.san}`;
+
+        movesEl.appendChild(moveItem);
+        movesEl.scrollTop = movesEl.scrollHeight;
+    }
+
+    function handleGameOver() {
+        setTimeout(() => {
+            let message = '';
+            if (chess.in_checkmate()) {
+                message = chess.turn() === 'w' ? 'Black wins by checkmate!' : 'White wins by checkmate!';
+            } else if (chess.in_draw()) {
+                message = 'Game is a draw!';
+            } else if (chess.in_stalemate()) {
+                message = 'Game is a stalemate!';
+            }
+
+            if (confirm(message + ' Play again?')) {
+                resetGame();
+            }
+        }, 100);
+    }
+
+    function resetGame() {
+        if (confirm('Reset the game?')) {
+            chess.reset();
+            selectedSquare = null;
+            validMoves = [];
+            document.getElementById('moves').innerHTML = '';
+            renderBoard();
+            updateStatus();
+        }
+    }
+
+    // Initialize
+    renderBoard();
+    updateStatus();
+</script>
+{% endblock %}

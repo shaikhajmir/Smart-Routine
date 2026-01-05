@@ -1,288 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Login | SmartRoutine</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Login | SmartRoutine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #020617;
+      --primary: #8b5cf6;
+      --accent: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --glass: rgba(30, 41, 59, 0.4);
+      --border-glass: rgba(255, 255, 255, 0.1);
+    }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Outfit", sans-serif;
+    }
 
-<!-- Google Identity -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
 
-<style>
-/* ========== RESET ========== */
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial,sans-serif}
-body{
-  background:radial-gradient(circle at top,#1a0b00,#000);
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
+    /* --- LEFT SIDE (IMAGE) --- */
+    .auth-visual {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+    }
 
-/* ========== HEADER (SAME AS BASE) ========== */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 50px;
-  background:rgba(0,0,0,.65);
-  backdrop-filter:blur(10px);
-}
-header h1{color:#ff9f1a}
-header a{
-  color:#fff;
-  text-decoration:none;
-  margin-left:20px;
-}
-.btn{
-  background:#ff9f1a;
-  color:#000;
-  padding:10px 22px;
-  border-radius:30px;
-  font-weight:600;
-}
+    .bg-img {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.6;
+      animation: zoomOut 20s infinite alternate;
+    }
 
-/* ========== MAIN ========== */
-.main{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:40px 20px;
-}
+    .visual-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid var(--border-glass);
+      max-width: 80%;
+      animation: slideInLeft 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
 
-/* ========== AUTH CARD ========== */
-.auth-wrapper{
-  display:flex;
-  width:900px;
-  max-width:100%;
-  background:#0d0d0d;
-  border-radius:22px;
-  overflow:hidden;
-  box-shadow:0 0 60px rgba(0,0,0,.7);
-}
+    /* --- RIGHT SIDE (FORM) --- */
+    .auth-form-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      position: relative;
+      background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15), transparent 40%);
+    }
 
-/* LEFT PANEL */
-.auth-left{
-  width:45%;
-  background:
-    linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.85)),
-    url("https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d");
-  background-size:cover;
-  background-position:center;
-  padding:40px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-.auth-left h2{color:#ff9f1a}
-.auth-left p{opacity:.9}
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      animation: fadeIn 1s ease-out;
+    }
 
-/* RIGHT PANEL */
-.auth-right{
-  width:55%;
-  padding:55px 40px;
-}
-.auth-right h1{margin-bottom:10px}
-.auth-right p{opacity:.8}
-.auth-right a{color:#ff9f1a;text-decoration:none}
+    .brand {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, white, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-/* FORM */
-form{margin-top:30px}
-input{
-  width:100%;
-  padding:14px;
-  background:#111;
-  border:1px solid #222;
-  border-radius:12px;
-  color:#fff;
-  margin-bottom:15px;
-}
-input::placeholder{color:#777}
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
 
-/* OPTIONS */
-.options{
-  display:flex;
-  justify-content:space-between;
-  font-size:.9rem;
-  opacity:.8;
-  margin-bottom:20px;
-}
-.options a{color:#ff9f1a}
+    p.subtitle {
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+    }
 
-/* BUTTON */
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  background:#ff9f1a;
-  color:#000;
-  font-weight:700;
-  font-size:1rem;
-  cursor:pointer;
-}
-button:hover{background:#ffc266}
+    /* --- INPUTS --- */
+    .input-group {
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: staggerUp 0.6s forwards;
+    }
 
-/* SOCIAL */
-.divider{
-  text-align:center;
-  margin:25px 0;
-  opacity:.6;
-}
-.social{
-  display:flex;
-  gap:15px;
-}
-.social button{
-  background:#111;
-  border:1px solid #222;
-  color:#fff;
-}
+    .input-group:nth-child(1) {
+      animation-delay: 0.2s;
+    }
 
-/* ========== FOOTER (SAME AS BASE) ========== */
-footer{
-  background:#000;
-  padding:40px 20px 20px;
-  border-top:1px solid #222;
-}
-.footer-grid{
-  max-width:1100px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:30px;
-}
-.footer-grid h4{margin-bottom:12px}
-.footer-grid a{
-  color:#aaa;
-  text-decoration:none;
-  display:block;
-  margin-bottom:6px;
-}
-.footer-grid a:hover{color:#fff}
-.social-icons i{
-  color:#ff9f1a;
-  margin-right:12px;
-}
-.footer-bottom{
-  text-align:center;
-  margin-top:30px;
-  color:#777;
-  font-size:.9rem;
-}
+    .input-group:nth-child(2) {
+      animation-delay: 0.3s;
+    }
 
-/* MOBILE */
-@media(max-width:768px){
-  .auth-wrapper{flex-direction:column}
-  .auth-left,.auth-right{width:100%}
-  header{padding:15px 20px}
-}
-</style>
+    .input-group:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-glass);
+      color: white;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      background: rgba(139, 92, 246, 0.1);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+      outline: none;
+    }
+
+    /* --- BUTTON --- */
+    button {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+      margin-top: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(139, 92, 246, 0.5);
+    }
+
+    /* --- ANIMATIONS --- */
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes staggerUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes zoomOut {
+      from {
+        transform: scale(1);
+      }
+
+      to {
+        transform: scale(1.1);
+      }
+    }
+
+    .back-link {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      z-index: 20;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    /* --- MOBILE --- */
+    @media(max-width: 900px) {
+      .auth-visual {
+        display: none;
+      }
+
+      .auth-form-container {
+        padding: 30px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <h1>SmartRoutine</h1>
-  <div>
-    <a href="/register">Register</a>
-    <a class="btn" href="/">Home</a>
-  </div>
-</header>
-
-<div class="main">
-  <div class="auth-wrapper">
-
-    <!-- LEFT -->
-    <div class="auth-left">
-      <div>
-        <h2>Welcome Back</h2>
-        <p>Log in to continue building discipline and improving accuracy.</p>
-      </div>
-      <a href="/" style="color:#fff;opacity:.8">← Back to website</a>
+  <div class="auth-visual">
+    <div class="bg-img"></div>
+    <div class="visual-content">
+      <h1 style="font-size:2.5rem; margin-bottom:15px;">Focus on Impact.</h1>
+      <p style="font-size:1.1rem; opacity:0.9;">"The key is not to prioritize what's on your schedule, but to schedule
+        your priorities."</p>
     </div>
+  </div>
 
-    <!-- RIGHT -->
-    <div class="auth-right">
-      <h1>Sign in</h1>
-      <p>
-        Don’t have an account?
-        <a href="/register">Create one</a>
-      </p>
+  <div class="auth-form-container">
+    <a href="/" class="back-link"><i class="fa-solid fa-xmark"></i></a>
+
+    <div class="auth-card">
+      <div class="brand"><i class="fa-solid fa-cube"></i> SmartRoutine</div>
+
+      <h2>Welcome back</h2>
+      <p class="subtitle">Please enter your details to sign in.</p>
 
       <form method="POST">
-        <input name="email" type="email" placeholder="Email address" required>
-        <input name="password" type="password" placeholder="Password" required>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div
+          style="background:rgba(239,68,68,0.2); color:#fca5a5; padding:12px; border-radius:8px; margin-bottom:20px; font-size:0.9rem; text-align:center;">
+          {{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
 
-        <div class="options">
-          <label><input type="checkbox"> Remember me</label>
-          <a href="#">Forgot password?</a>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="navin@example.com" required>
         </div>
 
-        <button type="submit">Log in</button>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <div class="input-group">
+          <button type="submit">Sign in</button>
+        </div>
       </form>
 
-      <div class="divider">or sign in with</div>
-
-      <!-- GOOGLE LOGIN -->
-      <div id="g_id_onload"
-           data-client_id="YOUR_GOOGLE_CLIENT_ID"
-           data-context="signin"
-           data-ux_mode="popup"
-           data-callback="handleGoogle"
-           data-auto_prompt="false">
-      </div>
-
-      <div class="social">
-        <div class="g_id_signin" data-type="standard"></div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-<footer>
-  <div class="footer-grid">
-    <div>
-      <h4>SmartRoutine</h4>
-      <p>AI-powered routine & productivity platform.</p>
-    </div>
-    <div>
-      <h4>Product</h4>
-      <a href="#">Features</a>
-      <a href="#">How it works</a>
-      <a href="#">Pricing</a>
-    </div>
-    <div>
-      <h4>Support</h4>
-      <a href="#">Help</a>
-      <a href="#">Contact</a>
-      <a href="#">Privacy</a>
-    </div>
-    <div>
-      <h4>Connect</h4>
-      <div class="social-icons">
-        <i class="fab fa-github"></i>
-        <i class="fab fa-linkedin"></i>
-        <i class="fab fa-instagram"></i>
-      </div>
+      <p style="text-align:center; margin-top:30px; color:var(--text-muted); font-size:0.9rem;">
+        Don't have an account? <a href="/register"
+          style="color:var(--accent); text-decoration:none; font-weight:600;">Create free account</a>
+      </p>
     </div>
   </div>
-  <div class="footer-bottom">
-    © 2025 SmartRoutine. All rights reserved.
-  </div>
-</footer>
-
-<script>
-function handleGoogle(response){
-  // Send response.credential to backend
-  console.log("Google login token:", response.credential);
-}
-</script>
 
 </body>
+
 </html>

@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block title %}Notes | SmartRoutine{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2 class="page-title"><i class="fa-solid fa-book"></i> My Notes</h2>
+    <p class="page-subtitle">Capture your ideas and thoughts.</p>
+</div>
+
+<style>
+    /* Standardized Styles */
+    .form-box {
+        background: var(--bg-card);
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 40px;
+        border: 1px solid var(--border-glass);
+        box-shadow: var(--glass-shadow);
+    }
+
+    .grid-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .item-card {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 24px;
+        border-radius: 16px;
+        border-left: 4px solid var(--secondary);
+        border: 1px solid var(--border-glass);
+        transition: 0.3s;
+    }
+
+    .item-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--secondary);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .item-card h3 {
+        color: var(--text-main);
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .item-card p {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .meta {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        opacity: 0.7;
+        margin-top: 15px;
+        display: block;
+    }
+
+    .btn-add {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-add:hover {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+</style>
+
+<!-- ADD NOTE FORM -->
+<div class="form-box">
+    <h3 style="margin-bottom:15px; color:var(--text);">Add New Note</h3>
+    <form method="POST">
+        <input type="text" name="title" placeholder="Note Title" required>
+        <textarea name="content" placeholder="Write your thoughts here..." rows="4" required></textarea>
+        <button type="submit" class="btn-add"><i class="fa-solid fa-plus"></i> Save Note</button>
+    </form>
+</div>
+
+<!-- NOTES LIST -->
+<div class="grid-list">
+    {% for note in notes[::-1] %}
+    <div class="item-card">
+        <h3>{{ note.title }}</h3>
+        <p>{{ note.content }}</p>
+        <span class="meta"><i class="fa-solid fa-calendar"></i> {{ note.date }}</span>
+    </div>
+    {% else %}
+    <p style="opacity:0.5; font-style: italic;">No notes yet. Add one above!</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

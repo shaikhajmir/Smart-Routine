@@ -1,0 +1,206 @@
+{% extends "layout.html" %}
+
+{% block title %}Leaderboard | SmartRoutine{% endblock %}
+
+{% block content %}
+<div class="page-header" style="margin-bottom: 30px;">
+    <h1
+        style="font-size:2.5rem; background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        🏆 Leaderboard</h1>
+    <p style="color:var(--text-muted);">Compete with fellow productivity champions!</p>
+</div>
+
+<style>
+    .leaderboard-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .podium {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+        align-items: flex-end;
+    }
+
+    .podium-item {
+        text-align: center;
+        position: relative;
+    }
+
+    .podium-item:nth-child(1) {
+        order: 2;
+    }
+
+    /* 1st place in middle */
+    .podium-item:nth-child(2) {
+        order: 1;
+    }
+
+    /* 2nd on left */
+    .podium-item:nth-child(3) {
+        order: 3;
+    }
+
+    /* 3rd on right */
+
+    .podium-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 20px;
+        position: relative;
+        transition: 0.3s;
+    }
+
+    .podium-item:nth-child(1) .podium-card {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05));
+        border-color: rgba(251, 191, 36, 0.3);
+        transform: scale(1.1);
+    }
+
+    .podium-item:nth-child(2) .podium-card {
+        background: linear-gradient(135deg, rgba(203, 213, 225, 0.1), rgba(148, 163, 184, 0.05));
+        border-color: rgba(203, 213, 225, 0.3);
+    }
+
+    .podium-item:nth-child(3) .podium-card {
+        background: linear-gradient(135deg, rgba(205, 127, 50, 0.1), rgba(180, 83, 9, 0.05));
+        border-color: rgba(205, 127, 50, 0.3);
+    }
+
+    .medal {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .rank-avatar {
+        font-size: 3rem;
+        margin: 10px 0;
+    }
+
+    .rank-name {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .rank-stat {
+        color: var(--accent);
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+
+    .rank-list {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 20px;
+    }
+
+    .rank-row {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.2s;
+    }
+
+    .rank-row:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .rank-row.current-user {
+        background: rgba(139, 92, 246, 0.1);
+        border-left: 3px solid var(--primary);
+    }
+
+    .rank-number {
+        font-size: 1.2rem;
+        font-weight: 700;
+        width: 50px;
+        color: var(--text-muted);
+    }
+
+    .rank-info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .rank-stats {
+        display: flex;
+        gap: 30px;
+        font-size: 0.9rem;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-weight: 700;
+        color: var(--accent);
+    }
+</style>
+
+<div class="leaderboard-container">
+    <!-- PODIUM (Top 3) -->
+    <div class="podium">
+        {% for user in leaderboard[:3] %}
+        <div class="podium-item">
+            <div class="podium-card">
+                <span class="medal">{% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% else %}🥉{% endif %}</span>
+                <div class="rank-avatar">{{ user.avatar }}</div>
+                <div class="rank-name">{{ user.name }}</div>
+                <div class="rank-stat">{{ user.streak }} 🔥</div>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">
+                    {{ user.total_hours }} hrs | {{ user.badges }} badges
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- FULL RANKINGS -->
+    <div class="rank-list">
+        <h3 style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+            <span>Full Rankings</span>
+            <span style="font-size:0.9rem; color:var(--text-muted); font-weight:400;">{{ leaderboard|length }}
+                Users</span>
+        </h3>
+
+        {% for user in leaderboard %}
+        <div class="rank-row {% if user.is_current %}current-user{% endif %}">
+            <div class="rank-number">#{{ loop.index }}</div>
+            <div class="rank-info">
+                <span style="font-size:2rem;">{{ user.avatar }}</span>
+                <div>
+                    <div style="font-weight:700;">{{ user.name }}</div>
+                    {% if user.is_current %}
+                    <div style="font-size:0.75rem; color:var(--primary);">⭐ You</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="rank-stats">
+                <div class="stat-item">
+                    <div class="stat-value">{{ user.streak }}</div>
+                    <div style="color:var(--text-muted); font-size:0.75rem;">Streak</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ user.total_hours }}</div>
+                    <div style="color:var(--text-muted); font-size:0.75rem;">Hours</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ user.badges }}</div>
+                    <div style="color:var(--text-muted); font-size:0.75rem;">Badges</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

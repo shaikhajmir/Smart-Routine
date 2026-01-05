@@ -1,0 +1,266 @@
+{% extends "layout.html" %}
+
+{% block title %}Profile | {{ email }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2 class="page-title"><i class="fa-solid fa-user-circle"></i> User Profile</h2>
+</div>
+
+<style>
+    .profile-grid {
+        display: grid;
+        gap: 30px;
+        grid-template-columns: 280px 1fr 300px;
+        /* 3 Columns */
+    }
+
+    @media(max-width: 1100px) {
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .profile-card {
+        background: var(--bg-card);
+        padding: 30px;
+        border-radius: 24px;
+        border: 1px solid var(--border-glass);
+        box-shadow: var(--glass-shadow);
+        height: min-content;
+    }
+
+    /* IDENTITY CARD */
+    .identity-card {
+        text-align: center;
+    }
+
+    .avatar-wrapper {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4rem;
+        position: relative;
+        border: 2px solid var(--primary);
+        box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .edit-av-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: var(--accent);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.9rem;
+        cursor: pointer;
+        border: 2px solid #0f172a;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .social-links a {
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        transition: 0.2s;
+    }
+
+    .social-links a:hover {
+        color: var(--primary);
+        transform: translateY(-3px);
+    }
+
+    /* FORM STYLES */
+    label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input,
+    textarea {
+        background: rgba(0, 0, 0, 0.3) !important;
+        border: 1px solid var(--border-glass) !important;
+        font-size: 0.95rem;
+    }
+
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .mini-stat {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    .mini-stat h3 {
+        font-size: 1.8rem;
+        color: var(--text-main);
+        margin-bottom: 0;
+    }
+
+    .mini-stat span {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    .av-option {
+        cursor: pointer;
+        font-size: 1.8rem;
+        padding: 8px;
+        border-radius: 50%;
+        transition: 0.2s;
+    }
+
+    .av-option:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    input[type="radio"]:checked+.av-option {
+        background: var(--primary);
+        transform: scale(1.1);
+    }
+</style>
+
+<div class="profile-grid">
+
+    <!-- COL 1: IDENTITY -->
+    <div class="profile-card identity-card">
+        <form method="POST" id="avatarForm">
+            <!-- Hidden modal trigger could go here, but using simple list for now -->
+            <div class="avatar-wrapper">
+                {{ user.data.get('avatar', '👤') }}
+                <!-- Simple hover toggle for list below -->
+            </div>
+            <div style="margin-bottom:20px; display:flex; gap:5px; justify-content:center; flex-wrap:wrap;">
+                {% for av in ['👤', '👩‍💻', '🧙‍♂️', '🦁', '🚀', '🤖', '⚡', '🦉'] %}
+                <label>
+                    <input type="radio" name="avatar" value="{{ av }}" style="display:none;"
+                        onchange="this.form.submit()" {% if user.data.get('avatar')==av %}checked{% endif %}>
+                    <span class="av-option">{{ av }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </form>
+
+        <h2 style="margin-bottom:5px;">{{ user.data.get('first_name', email.split('@')[0]) }}</h2>
+        <p style="color:var(--accent); font-weight:500;">{{ user.data.get('title', 'Productivity Enthusiast') }}</p>
+
+        <p style="margin-top:15px; font-size:0.9rem; opacity:0.8; line-height:1.6;">
+            {{ user.data.get('bio', 'No bio added yet.') }}
+        </p>
+
+        <div class="social-links">
+            {% if user.data.get('socials', {}).get('github') %}
+            <a href="{{ user.data['socials']['github'] }}" target="_blank"><i class="fa-brands fa-github"></i></a>
+            {% endif %}
+            {% if user.data.get('socials', {}).get('twitter') %}
+            <a href="{{ user.data['socials']['twitter'] }}" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+            {% endif %}
+            {% if user.data.get('socials', {}).get('linkedin') %}
+            <a href="{{ user.data['socials']['linkedin'] }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- COL 2: MAIN FORM & STATS -->
+    <div class="profile-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3><i class="fa-solid fa-id-card"></i> Profile Details</h3>
+            <button class="btn btn-primary" onclick="document.getElementById('profileForm').submit()">Save
+                Changes</button>
+        </div>
+
+        <form method="POST" id="profileForm">
+            <input type="hidden" name="update_profile" value="true">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                <div>
+                    <label>Display Name</label>
+                    <input name="first_name" value="{{ user.data.get('first_name', '') }}" placeholder="Your Name">
+                </div>
+                <div>
+                    <label>Job Title</label>
+                    <input name="title" value="{{ user.data.get('title', '') }}" placeholder="e.g. Student, Designer">
+                </div>
+            </div>
+
+            <label style="margin-top:15px;">Micro Bio</label>
+            <textarea name="bio" rows="3" placeholder="Tell us about yourself..."
+                style="resize:none;">{{ user.data.get('bio', '') }}</textarea>
+
+            <label style="margin-top:15px;">Social Links</label>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <input name="github" value="{{ user.data.get('socials', {}).get('github', '') }}"
+                    placeholder="GitHub URL">
+                <input name="twitter" value="{{ user.data.get('socials', {}).get('twitter', '') }}"
+                    placeholder="Twitter URL">
+                <input name="linkedin" value="{{ user.data.get('socials', {}).get('linkedin', '') }}"
+                    placeholder="LinkedIn URL">
+            </div>
+        </form>
+
+        <h3 style="margin-top:30px;"><i class="fa-solid fa-chart-simple"></i> Lifetime Stats</h3>
+        <div class="stat-grid">
+            <div class="mini-stat">
+                <h3>{{ stats.streak }}</h3>
+                <span>Current Streak</span>
+            </div>
+            <div class="mini-stat">
+                <h3>{{ stats.hours }}</h3>
+                <span>Focus Hours</span>
+            </div>
+            <div class="mini-stat">
+                <h3>{{ stats.logs }}</h3>
+                <span>Total Logs</span>
+            </div>
+            <div class="mini-stat">
+                <h3 style="color:var(--accent);">Pro</h3>
+                <span>Account Type</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- COL 3: SETTINGS -->
+    <div class="profile-card">
+        <h3><i class="fa-solid fa-shield-halved"></i> Security</h3>
+
+        <form method="POST" style="margin-top:20px;">
+            <label>Update Password</label>
+            <input type="password" name="new_password" placeholder="New string password" required>
+            <button type="submit" class="btn"
+                style="width:100%; background:rgba(255,255,255,0.1); color:white; border:1px solid var(--border-glass);">Update</button>
+        </form>
+
+        <div style="margin-top:40px; border-top:1px solid var(--border-glass); padding-top:20px;">
+            <h4 style="color:#ef4444; margin-bottom:10px;">Danger Zone</h4>
+            <a href="/logout" class="btn"
+                style="width:100%; background:rgba(239,68,68,0.1); color:#ef4444; border:1px solid rgba(239,68,68,0.3); justify-content:center;">
+                <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

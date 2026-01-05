@@ -1,51 +1,170 @@
 {
-    "user@email.com": {
-        "profile": {
-            "profession": "Student"
-        },
+    "test@example.com": {
+        "password": "scrypt:32768:8:1$O3S1tPMUASF8JD1e$5f5a6834530764d6b109e7d94eb5e8152a5d2b88f0406341e17b65018a9ba8db0bd0f9e3df351dd94741af468e54381ee35bebb4b38030ce887c181568673fc6",
+        "data": {},
         "activities": [
-            "College Study",
-            "Coding Practice",
-            "LeetCode",
-            "Project Work"
+            "Coding",
+            "Reading",
+            "Exercise"
         ],
         "daily_logs": [
             {
-                "date": "2025-12-31",
+                "date": "2026-01-04",
                 "log": {
-                    "College Study": 3,
-                    "Coding Practice": 2,
-                    "LeetCode": 1,
-                    "Project Work": 1
+                    "Coding": 4,
+                    "Reading": 1
+                }
+            },
+            {
+                "date": "2026-01-03",
+                "log": {
+                    "Coding": 3,
+                    "Exercise": 1
+                }
+            },
+            {
+                "date": "2026-01-02",
+                "log": {
+                    "Coding": 5
                 }
             }
         ],
-        "notes": [
+        "tasks": [],
+        "notes": [],
+        "expenses": []
+    },
+    "shaikhajmirilal8@gmail.com": {
+        "password": "scrypt:32768:8:1$qNKhDnKgI1BUUC4w$f5e7e15833f25f4c33991eec0bd2ded75b01779bc046a17841d446a09ba1c79a37dcd2435947427663d48eca6c50f7ac1f854a6f58f5a54aacf609f53e04c37e",
+        "data": {
+            "avatar": "\ud83d\ude80",
+            "last_seen": "2026-01-05T18:41:36.518640"
+        },
+        "activities": [
+            "Coding",
+            "Reading",
+            "Exercise",
+            "Sleep",
+            "leetcode"
+        ],
+        "daily_logs": [
             {
-                "date": "2025-12-31",
-                "topic": "Binary Search",
-                "source": "LeetCode",
-                "duration": 1.5,
-                "content": "Understood lower_bound"
+                "date": "2026-01-04",
+                "log": {}
+            },
+            {
+                "date": "2026-01-04",
+                "log": {
+                    "Coding": 1,
+                    "Reading": 2,
+                    "Exercise": 2,
+                    "Sleep": 1,
+                    "leetcode": 2
+                }
             }
         ],
         "expenses": [
             {
-                "date": "2025-12-31",
-                "category": "Books",
-                "amount": 200
+                "amount": 12.0,
+                "description": "biryani",
+                "category": "food",
+                "date": "2026-01-04"
             }
-        ]
-    },
-    "shaikhajmirilal8@gmail.com": {
-        "password": "scrypt:32768:8:1$OHdEx5m3RRvrcgza$2bde51e0cd9a6e34c9bb1e6cda7b58cae010c7e8933a50941c185effc18f199bb1915cdf74ff80b7fec8c5041b7348e76268f94cced77834b55a9dcb21b40083",
-        "data": {},
-        "activities": [],
-        "daily_logs": [
+        ],
+        "notes": [
             {
-                "date": "2025-12-17",
-                "log": {}
+                "title": "leetcode",
+                "content": "5 problem",
+                "date": "2026-01-04"
             }
-        ]
+        ],
+        "challenges": {
+            "active": [
+                {
+                    "id": "daily_5hrs",
+                    "title": "5-Hour Focus",
+                    "desc": "Log 5 hours of productive work today",
+                    "target": 5,
+                    "metric": "hours",
+                    "reward": "\u26a1",
+                    "type": "daily",
+                    "progress": 0,
+                    "expires": "2026-01-05"
+                },
+                {
+                    "id": "weekly_5activities",
+                    "title": "Variety Seeker",
+                    "desc": "Try 5 different activities",
+                    "target": 5,
+                    "metric": "activities",
+                    "reward": "\ud83c\udf08",
+                    "type": "weekly",
+                    "progress": 0,
+                    "expires": "2026-01-11"
+                }
+            ],
+            "completed": [
+                "weekly_5activities"
+            ]
+        },
+        "friends": {
+            "list": [
+                "shaikhajmirilal@gmail.com"
+            ],
+            "pending_sent": [],
+            "pending_received": []
+        },
+        "h2h_challenges": {
+            "active": [
+                {
+                    "id": "da1a8e8f",
+                    "challenger": "shaikhajmirilal8@gmail.com",
+                    "opponent": "shaikhajmirilal@gmail.com",
+                    "type": "chess_game",
+                    "title": "Chess Match",
+                    "target": 1,
+                    "metric": "chess",
+                    "start_date": "2026-01-04",
+                    "end_date": "2026-01-11",
+                    "challenger_progress": 0,
+                    "opponent_progress": 0,
+                    "status": "pending",
+                    "winner": null
+                }
+            ],
+            "completed": [],
+            "pending": []
+        }
+    },
+    "shaikhajmirilal@gmail.com": {
+        "password": "scrypt:32768:8:1$3HzmZIgSg7yL3a2E$6af02946743318a41305549e6895e3651f08eded48b4189e49b2121335fe5ab1bcc2fd9a1498f48debb191ad5932b32c7604c8ca3323e73eebde9d7de9e882db",
+        "data": {},
+        "friends": {
+            "list": [
+                "shaikhajmirilal8@gmail.com"
+            ],
+            "pending_sent": [],
+            "pending_received": []
+        },
+        "h2h_challenges": {
+            "active": [],
+            "completed": [],
+            "pending": [
+                {
+                    "id": "da1a8e8f",
+                    "challenger": "shaikhajmirilal8@gmail.com",
+                    "opponent": "shaikhajmirilal@gmail.com",
+                    "type": "chess_game",
+                    "title": "Chess Match",
+                    "target": 1,
+                    "metric": "chess",
+                    "start_date": "2026-01-04",
+                    "end_date": "2026-01-11",
+                    "challenger_progress": 0,
+                    "opponent_progress": 0,
+                    "status": "pending",
+                    "winner": null
+                }
+            ]
+        }
     }
 }

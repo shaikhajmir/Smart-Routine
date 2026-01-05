@@ -1,0 +1,394 @@
+{% extends "layout.html" %}
+
+{% block title %}Head-to-Head | SmartRoutine{% endblock %}
+
+{% block content %}
+<div class="page-header" style="margin-bottom: 30px;">
+    <h1
+        style="font-size:2.5rem; background: linear-gradient(135deg, #ef4444, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        ⚔️ Head-to-Head Battles</h1>
+    <p style="color:var(--text-muted);">Challenge your friends to epic productivity duels!</p>
+</div>
+
+<style>
+    .h2h-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .challenge-card {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(245, 158, 11, 0.02));
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .challenge-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .vs-section {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin: 20px 0;
+    }
+
+    .player {
+        flex: 1;
+        text-align: center;
+    }
+
+    .player-avatar {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    .player-name {
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .vs-divider {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent);
+    }
+
+    .progress-container {
+        margin: 20px 0;
+    }
+
+    .dual-progress {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .progress-side {
+        flex: 1;
+    }
+
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .progress-bar {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        height: 12px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: 0.5s;
+    }
+
+    .progress-fill.challenger {
+        background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    .progress-fill.opponent {
+        background: linear-gradient(90deg, #3b82f6, #2563eb);
+    }
+
+    .challenge-type-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+    }
+
+    .create-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    .challenge-option {
+        background: rgba(255, 255, 255, 0.02);
+        border: 2px solid var(--border-glass);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .challenge-option:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--primary);
+    }
+
+    .challenge-option input[type="radio"] {
+        display: none;
+    }
+
+    .challenge-option input[type="radio"]:checked+label {
+        border-color: var(--primary);
+        background: rgba(139, 92, 246, 0.1);
+    }
+</style>
+
+<div class="h2h-container">
+    <!-- CREATE CHALLENGE -->
+    {% if friends %}
+    <div class="section-card">
+        <h2 style="margin-bottom: 20px;">⚡ Create New Challenge</h2>
+        <form action="/h2h/create" method="POST">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600;">Select Opponent:</label>
+                <select name="opponent" required
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.05); color: white;">
+                    <option value="">Choose a friend...</option>
+                    {% for friend in friends %}
+                    <option value="{{ friend.email }}">{{ friend.avatar }} {{ friend.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 15px; font-weight: 600;">Select Challenge Type:</label>
+                <div class="create-grid">
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="streak_battle" required>
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🔥</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Streak Battle</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">7-day streak competition</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="hour_race">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">⏱️</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Hour Race</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">First to 20 hours wins</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="task_sprint">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">✅</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Task Sprint</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Complete 15 tasks in 3 days</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="activity_master">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🌈</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Activity Master</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Try 5 different activities</div>
+                    </label>
+
+                    <!-- NEW CHALLENGES -->
+                    <label class="challenge-option" style="border-color: rgba(251,191,36,0.3);">
+                        <input type="radio" name="challenge_type" value="chase_battle">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🏃</div>
+                        <div style="font-weight: 700; margin-bottom: 5px; color: #fbbf24;">Chase Battle</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">50 hours in 14 days</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="speed_run">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">⚡</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Speed Run</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">10 hours in 24h</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="endurance_test">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">💪</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Endurance Test</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">14-day streak</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="perfect_week">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🎯</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Perfect Week</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">40 hours in 7 days</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="mega_sprint">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🚀</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Mega Sprint</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">30 tasks in 7 days</div>
+                    </label>
+
+                    <label class="challenge-option">
+                        <input type="radio" name="challenge_type" value="variety_king">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">👑</div>
+                        <div style="font-weight: 700; margin-bottom: 5px;">Variety King</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">10 activities in 14 days</div>
+                    </label>
+
+                    <!-- CHESS GAME -->
+                    <label class="challenge-option"
+                        style="border-color: rgba(139,92,246,0.4); background: linear-gradient(135deg, rgba(139,92,246,0.05), rgba(6,182,212,0.02));">
+                        <input type="radio" name="challenge_type" value="chess_game">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">♟️</div>
+                        <div style="font-weight: 700; margin-bottom: 5px; color: #8b5cf6;">Chess Match</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Play chess with your friend!</div>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Challenge 🚀</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- PENDING CHALLENGES -->
+    {% if pending_challenges %}
+    <div class="section-card">
+        <h2 style="margin-bottom: 20px;">📬 Incoming Challenges ({{ pending_challenges|length }})</h2>
+        {% for challenge in pending_challenges %}
+        <div class="challenge-card">
+            <div class="challenge-header">
+                <div>
+                    <span class="challenge-type-badge">{{ challenge.type.replace('_', ' ').title() }}</span>
+                    <h3 style="margin-top: 10px;">{{ challenge.title }}</h3>
+                </div>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 2.5rem; margin-bottom: 10px;">{{ challenge.sender_avatar }}</div>
+                <div style="font-size: 1.2rem; font-weight: 700;">{{ challenge.sender_name }} challenges you!</div>
+                <div style="color: var(--text-muted); margin: 10px 0;">Target: {{ challenge.target }} {{
+                    challenge.metric }}</div>
+                <div style="color: var(--text-muted); font-size: 0.85rem;">Ends: {{ challenge.end_date }}</div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <a href="/h2h/accept/{{ challenge.id }}" class="btn btn-primary" style="flex: 1;">Accept Challenge
+                    🔥</a>
+                <a href="/h2h/decline/{{ challenge.id }}" class="btn" style="background: #334155; flex: 1;">Decline</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ACTIVE CHALLENGES -->
+    {% if active_challenges %}
+    <div class="section-card">
+        <h2 style="margin-bottom: 20px;">⚔️ Active Battles ({{ active_challenges|length }})</h2>
+        {% for challenge in active_challenges %}
+        {% set my_progress = challenge.challenger_progress if challenge.is_challenger else challenge.opponent_progress
+        %}
+        {% set their_progress = challenge.opponent_progress if challenge.is_challenger else
+        challenge.challenger_progress %}
+        {% set my_pct = (my_progress / challenge.target * 100) | round | int %}
+        {% set their_pct = (their_progress / challenge.target * 100) | round | int %}
+
+        <div class="challenge-card">
+            <div class="challenge-header">
+                <div>
+                    <span class="challenge-type-badge">{{ challenge.type.replace('_', ' ').title() }}</span>
+                    <h3 style="margin-top: 10px;">{{ challenge.title }}</h3>
+                </div>
+                <div style="text-align: right; font-size: 0.85rem; color: var(--text-muted);">
+                    <div>Ends: {{ challenge.end_date }}</div>
+                    <div>Status: <span
+                            style="color: {% if challenge.status == 'active' %}#22c55e{% else %}#fbbf24{% endif %}">{{
+                            challenge.status.upper() }}</span></div>
+                </div>
+            </div>
+
+            <div class="vs-section">
+                <div class="player">
+                    <div class="player-avatar">{{ user.data.get('avatar', '👤') }}</div>
+                    <div class="player-name">You</div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #ef4444; margin-top: 10px;">{{ my_progress
+                        }}</div>
+                </div>
+
+                <div class="vs-divider">VS</div>
+
+                <div class="player">
+                    <div class="player-avatar">{{ challenge.opponent_avatar }}</div>
+                    <div class="player-name">{{ challenge.opponent_name }}</div>
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #3b82f6; margin-top: 10px;">{{
+                        their_progress }}</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div style="text-align: center; margin-bottom: 15px; font-weight: 600;">Target: {{ challenge.target }}
+                    {{ challenge.metric }}</div>
+                <div class="dual-progress">
+                    <div class="progress-side">
+                        <div class="progress-label">
+                            <span>You</span>
+                            <span>{{ my_pct }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill challenger" style="width: {{ my_pct if my_pct < 100 else 100 }}%">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress-side">
+                        <div class="progress-label">
+                            <span>{{ challenge.opponent_name }}</span>
+                            <span>{{ their_pct }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill opponent"
+                                style="width: {{ their_pct if their_pct < 100 else 100 }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if challenge.type == 'chess_game' %}
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="/chess/{{ challenge.id }}" class="btn btn-primary"
+                    style="font-size: 1.1rem; padding: 15px 30px;">
+                    ♟️ Play Chess
+                </a>
+            </div>
+            {% endif %}
+
+            {% if my_progress >= challenge.target or their_progress >= challenge.target %}
+            <div
+                style="margin-top: 20px; padding: 15px; background: rgba(34,197,94,0.1); border-radius: 8px; text-align: center; color: #22c55e; font-weight: 700;">
+                {% if my_progress > their_progress %}
+                🏆 You're winning!
+                {% elif their_progress > my_progress %}
+                {{ challenge.opponent_name }} is ahead!
+                {% else %}
+                It's a tie!
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="section-card" style="text-align: center; padding: 60px;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">⚔️</div>
+        <h3>No Active Battles</h3>
+        <p style="color: var(--text-muted); margin-top: 10px;">Challenge a friend to start competing!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

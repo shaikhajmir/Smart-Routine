@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% block title %}Expenses | SmartRoutine{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2 class="page-title"><i class="fa-solid fa-wallet"></i> Track Expenses</h2>
+    <p class="page-subtitle">Monitor your spending habits.</p>
+</div>
+
+<style>
+    /* Standardized Styles */
+    .form-box {
+        background: var(--bg-card);
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 40px;
+        border: 1px solid var(--border-glass);
+        box-shadow: var(--glass-shadow);
+    }
+
+    .expense-row {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 20px 25px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-left: 4px solid #ef4444;
+        border: 1px solid var(--border-glass);
+        transition: 0.3s;
+    }
+
+    .expense-row:hover {
+        background: rgba(255, 255, 255, 0.06);
+        transform: translateX(5px);
+    }
+
+    .expense-info h4 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+        color: var(--text-main);
+        font-weight: 600;
+    }
+
+    .expense-info span {
+        opacity: 0.7;
+        font-size: 0.95rem;
+        margin-right: 15px;
+        color: var(--text-muted);
+    }
+
+    .expense-amount {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #ef4444;
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-add {
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        margin-top: 10px;
+    }
+
+    .btn-add:hover {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    @media(max-width: 600px) {
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+</style>
+
+<!-- EXPENSE ADD FORM -->
+<div class="form-box">
+    <h3 style="margin-bottom:15px; color:var(--text);">Add New Expense</h3>
+    <form method="POST">
+        <div class="form-row">
+            <input type="number" name="amount" placeholder="Amount ($)" step="0.01" required>
+            <input type="text" name="category" placeholder="Category (e.g., Food, Transport)" required>
+        </div>
+        <input type="text" name="description" placeholder="Description (Optional)">
+        <button type="submit" class="btn-add">Add Expense</button>
+    </form>
+</div>
+
+<!-- EXPENSES LIST -->
+<div class="list-container">
+    {% for expense in expenses[::-1] %}
+    <div class="expense-row">
+        <div class="expense-info">
+            <h4>{{ expense.category }}</h4>
+            <span>{{ expense.description }}</span>
+            <span style="color: var(--text-muted); font-size:0.8rem"><i class="fa-regular fa-calendar"></i> {{
+                expense.date }}</span>
+        </div>
+        <div class="expense-amount">-${{ expense.amount }}</div>
+    </div>
+    {% else %}
+    <p style="opacity:0.5; font-style: italic;">No expenses recorded yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block title %}Activities | SmartRoutine{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2 class="page-title"><i class="fa-solid fa-list-check"></i> Manage Activities</h2>
+    <p class="page-subtitle">Define what you want to track daily.</p>
+</div>
+
+<style>
+    /* Standardized Styles */
+    .form-box {
+        background: var(--bg-card);
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 40px;
+        border: 1px solid var(--border-glass);
+        box-shadow: var(--glass-shadow);
+    }
+
+    .activity-item {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 20px 25px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-left: 4px solid var(--primary);
+        border: 1px solid var(--border-glass);
+    }
+
+    .btn-delete {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        padding: 10px 18px;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    .btn-delete:hover {
+        background: #ef4444;
+        color: white;
+        border-color: #ef4444;
+    }
+
+    .btn-add {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-add:hover {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+
+    .form-group {
+        display: flex;
+        gap: 20px;
+    }
+
+    @media(max-width: 600px) {
+        .form-group {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<!-- ACTIVITY FORM -->
+<div class="form-box">
+    <h3 style="margin-bottom:15px; color:var(--text);">Add New Category</h3>
+    <p style="opacity:0.7; margin-bottom:15px; font-size:0.9rem;">Adding a category here makes it available in your
+        Daily Log.</p>
+    <form method="POST">
+        <div class="form-group">
+            <input type="text" name="new_activity" placeholder="New Activity Name (e.g. Meditate, Gaming, Learning)"
+                required>
+            <button type="submit" class="btn-add">Add Activity</button>
+        </div>
+    </form>
+</div>
+
+<!-- ACTIVITIES LIST -->
+<div class="list-container">
+    {% for act in activities %}
+    <div class="activity-item">
+        <h3>{{ act }}</h3>
+        <form method="POST">
+            <input type="hidden" name="delete_activity" value="{{ act }}">
+            <button type="submit" class="btn-delete" onclick="return confirm('Delete this activity category?')"><i
+                    class="fa-solid fa-trash"></i> Delete</button>
+        </form>
+    </div>
+    {% else %}
+    <p style="opacity:0.5; font-style: italic;">No activities defined.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
